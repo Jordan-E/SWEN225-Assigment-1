@@ -1,87 +1,112 @@
-class User
-{
+class User {
   Set hand; 
   Map weaponsSeen;
   Map personsSeen;
   Map roomsSeen;
 }
 
-class Board
-{
+class Board {
+  1 -- * Cell;
+  1 -- 12 Piece;
 }
 
-class Cell
-{
+class Cell {
+  type;
 }
 
-class Person
-{
-}
-
-class Wepons
-{
-}
-
-class Cluedo
-{
+class Cluedo{
+  Queue userOrder;
+  1 -- 1 Board;
+  1 -- 1 Deck;
+  1 -- 1 Envelope;
+  1 -- 3..6 User;
+  1 -- 2 Dice;
 }
 
 class Deck {
   1 -- 21 Card;
 }
 
-class Card
-{
+class Card {
 }
 
-class Envelope
-{
+class Envelope {
 }
 
-//$?[End_of_model]$?
+class Dice {
+}
+
+class Piece {
+
+}
+
+class Weapon {
+   isA Piece;
+}
+
+class Person {
+   isA Piece;
+}//$?[End_of_model]$?
 
 class User
 {
-  position 91 88 109 59;
+  position 50 147 154 111;
 }
 
 class Board
 {
-  position 444 93 109 41;
+  position 585 94 109 41;
+  position.association Board__Cell 12,41 105,0;
+  position.association Board__Piece 82,41 99,0;
 }
 
 class Cell
 {
-  position 66 223 109 41;
-}
-
-class Person
-{
-  position 289 89 109 41;
-}
-
-class Wepons
-{
-  position 109 406 109 41;
+  position 520 283 109 59;
 }
 
 class Cluedo
 {
-  position 352 280 109 41;
+  position 250 30 109 41;
+  position.association Cluedo__User 0,18 150,0;
+  position.association Cluedo__Envelope 77,59 53,0;
+  position.association Cluedo__Deck 20,41 30,0;
+  position.association Cluedo__Dice 58,41 30,0;
+  position.association Board__Cluedo 137,9 0,10;
 }
 
 class Deck
 {
-  position 462 454 109 41;
-  position.association Card:cards__Deck 0,38 62,0;
+  position 239 181 109 41;
+  position.association Card__Deck 20,41 28,0;
 }
 
 class Card
 {
-  position 267 488 109 41;
+  position 198 315 109 41;
 }
 
 class Envelope
 {
-  position 283 391 109 41;
+  position 455 132 109 41;
+}
+
+class Dice
+{
+  position 393 236 109 41;
+}
+
+class Weapon
+{
+  position 608 430 109 41;
+}
+
+class Person
+{
+  position 753 430 109 41;
+}
+
+class Piece
+{
+  position 691 312 109 41;
 }
