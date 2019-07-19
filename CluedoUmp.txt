@@ -1,0 +1,87 @@
+class User
+{
+  Set hand; 
+  Map weaponsSeen;
+  Map personsSeen;
+  Map roomsSeen;
+}
+
+class Board
+{
+}
+
+class Cell
+{
+}
+
+class Person
+{
+}
+
+class Wepons
+{
+}
+
+class Cluedo
+{
+}
+
+class Deck {
+  1 -- 21 Card;
+}
+
+class Card
+{
+}
+
+class Envelope
+{
+}
+
+//$?[End_of_model]$?
+
+class User
+{
+  position 91 88 109 59;
+}
+
+class Board
+{
+  position 444 93 109 41;
+}
+
+class Cell
+{
+  position 66 223 109 41;
+}
+
+class Person
+{
+  position 289 89 109 41;
+}
+
+class Wepons
+{
+  position 109 406 109 41;
+}
+
+class Cluedo
+{
+  position 352 280 109 41;
+}
+
+class Deck
+{
+  position 462 454 109 41;
+  position.association Card:cards__Deck 0,38 62,0;
+}
+
+class Card
+{
+  position 267 488 109 41;
+}
+
+class Envelope
+{
+  position 283 391 109 41;
+}
