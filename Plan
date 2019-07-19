@@ -1,0 +1,12 @@
+Make the board
+Select one of each type of card and put them into the envelope
+Distribute the remaining cards between all users
+Initialise all of the users' fields
+Initialise users queue
+Play
+  Poll user off queue then offer (end of queue)
+  Roll dice
+  Tell them where they can move
+  Check if in room. Offer them a chance to make a suggestion
+  Go around players in order of queue. If they have a card that disproves the suggestion then show them said card.
+    Update relevant map
