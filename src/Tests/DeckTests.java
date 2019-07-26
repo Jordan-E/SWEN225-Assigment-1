@@ -2,7 +2,9 @@ package Tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -28,10 +30,12 @@ class DeckTests {
 	}
 	
 	@Test
-	void test2() {	//check isEmpty works
+	void test2() {	//tests that get envelope returns 3 cards that include a weapon, room and person
 		Deck deck = new Deck();
-		Set<Card> envelope = new HashSet<>();  
-		envelope.addAll(deck.getEnvelopeContents());
+		List<Card> envelope = new ArrayList<>(deck.getEnvelopeContents());
+		assertFalse(envelope.get(0).cardType() == envelope.get(1).cardType());
+		assertFalse(envelope.get(0).cardType() == envelope.get(2).cardType());
+		assertFalse(envelope.get(1).cardType() == envelope.get(2).cardType());
 	}
 	
 }
