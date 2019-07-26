@@ -19,7 +19,10 @@ class Cluedo{
   1 -- 1 Board;
   1 -- 1 Deck;
   1 -- 3..6 User;
-  1 -- 2 Dice;
+  }
+
+class Envelope{
+  1--1 Cluedo;
 }
 
 class Deck {
@@ -39,9 +42,6 @@ class CharacterCard {
 
 class RoomCard {
   isA Card;
-}
-
-class Dice {
 }
 
 class Piece {
@@ -75,11 +75,10 @@ class Cell
 
 class Cluedo
 {
-  position 250 30 109 41;
+  position 250 31 145 59;
   position.association Cluedo__User 0,18 150,0;
   position.association Cluedo__Deck 20,41 30,0;
-  position.association Cluedo__Dice 58,41 30,0;
-  position.association Board__Cluedo 137,9 0,10;
+  position.association Board__Cluedo 145,12 0,10;
 }
 
 class Deck
@@ -93,11 +92,6 @@ class Card
   position 198 315 109 41;
 }
 
-class Dice
-{
-  position 393 236 109 41;
-}
-
 class Weapon
 {
   position 695 427 109 41;
@@ -107,7 +101,7 @@ class Piece
 {
   position 691 312 109 41;
 }
-//$?[End_of_model]$?
+
 
 class Character
 {
@@ -127,4 +121,10 @@ class CharacterCard
 class RoomCard
 {
   position 322 406 109 41;
+}
+//$?[End_of_model]$?
+
+class Envelope
+{
+  position 416 210 109 41;
 }
