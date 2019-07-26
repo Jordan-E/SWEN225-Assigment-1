@@ -21,18 +21,24 @@ public class Envelope {
 		return cards;
 	}
 	
-	public WeaponCard getWeapon() {
-		//TODO
+	public Card getWeapon() {
+		for (Card card : cards) {
+			if(card instanceof WeaponCard) return card;
+		}
 		return null;
 	}
 	
-	public CharacterCard getCharacter() {
-		//TODO
+	public Card getCharacter() {
+		for (Card card : cards) {
+			if(card instanceof CharacterCard) return card;
+		}
 		return null;
 	}
 	
-	public RoomCard getRoom() {
-		//TODO
+	public Card getRoom() {
+		for (Card card : cards) {
+			if(card instanceof RoomCard) return card;
+		}
 		return null;
 	}
 }

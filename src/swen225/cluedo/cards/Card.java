@@ -18,6 +18,4 @@ public interface Card {
 	 */
 	public String returnItem();
 	
-	
-	
 }
