@@ -1,22 +1,15 @@
 package swen225.cluedo;
 
-import java.util.Queue;
-
-
 /**
  * 
- * Board is a class that holds a 24x25 2D array of the board. 
- * 
  * @author Ellisjord
- *
  */
 public class Board {
 	private Cell[][] board;
-
 	
-	public Board() {
-		board = new Cell[24][25];
-		
+	public Board(int row, int col) {
+		board = new Cell[row][col];
+		if (row != 25 || col != 24) System.out.println("Board dimensions not supported");	
 	}
 	
 	/**
@@ -28,8 +21,6 @@ public class Board {
 	 * print out the board as text into the output.
 	 */
 	public void printBoard() {}
-	
-
 
 	/**
 	 * checks where a cell is clear for a player to move into

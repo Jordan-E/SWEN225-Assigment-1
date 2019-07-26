@@ -6,9 +6,6 @@ package swen225.cluedo.pieces;
  *
  */
 public class Character implements Piece{
-
+	
 }
 
-enum CharacterType { 
-	MissScarlett, ColonelMustard, MrsWhite, MrGreen, MrsPeacock, ProfessorPlum; 
-} 
