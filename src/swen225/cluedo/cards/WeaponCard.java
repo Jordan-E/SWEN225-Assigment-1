@@ -8,4 +8,23 @@ package swen225.cluedo.cards;
  */
 public class WeaponCard implements Card{
 
+	String description;
+	public WeaponCard(String description) {
+		this.description = description;
+	}
+
+	public String cardType() {
+		return "weapon";
+	}
+
+
+	public String returnItem() {
+		return description;
+	}
+	
+	@Override
+	public String toString() {
+		return description;
+	}
+	
 }

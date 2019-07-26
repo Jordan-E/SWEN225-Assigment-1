@@ -7,8 +7,22 @@ package swen225.cluedo.pieces;
  */
 public class Weapon implements Piece{
 
-}
+	@Override
+	public int getX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-enum WeponType { 
-	Candlestick, Dagger, LeadPipe, Revolver, Rope, Spanner; 
-} 
+	@Override
+	public int getY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int move(int x, int y) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

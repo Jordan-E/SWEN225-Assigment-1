@@ -7,5 +7,24 @@ package swen225.cluedo.cards;
  *
  */
 public class RoomCard implements Card{
+	String description;
+	public RoomCard(String description) {
+		this.description = description;
+	}
+
+	public String cardType() {
+		return "room";
+	}
+
+
+	public String returnItem() {
+		return description;
+	}
+
+	@Override
+	public String toString() {
+		return description;
+	}
+	
 
 }

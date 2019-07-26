@@ -8,5 +8,16 @@ package swen225.cluedo.cards;
  *
  */
 public interface Card {
+	/**
+	 * @return returns if the card is a weapon, Character or Room.
+	 */
+	public String cardType();
+	
+	/**
+	 * @return returns what the card description is.
+	 */
+	public String returnItem();
+	
+	
 	
 }

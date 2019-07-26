@@ -14,10 +14,12 @@ public class User {
 	 
 	Set<Card> hand;
 	String name;
+
 	
 	public User(String name) {
 		this.name = name;
 		hand = new HashSet<Card>();
+		
 	}
 	
 	/**
