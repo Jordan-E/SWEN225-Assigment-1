@@ -1,5 +1,10 @@
 package swen225.cluedo;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import swen225.cluedo.moves.Move;
+
 /**
  * 
  * @author Ellisjord
@@ -8,6 +13,8 @@ public class Board {
 	private Cell[][] board;
 	private int rows;
 	private int cols;
+	
+	public enum Room {Kitchen, BallRoom, Conservatory, BilliardRoom, Library, Study, Hall, Lounge, DiningRoom}
 	
 	private String[][] boardData = {
 		{"-","-","-","-","-","-","-","-","-"," ","-","-","-","-"," ","-","-","-","-","-","-","-","-","-"},//1
@@ -55,6 +62,7 @@ public class Board {
 	 * print out the board as text into the output.
 	 */
 	public void printBoard() {
+		//TODO please change this to a .toString() method
 		//System.out.println("|------------------------|");
 		for(int i = 0; i<rows; i++) {
 			System.out.print("|");
@@ -68,13 +76,47 @@ public class Board {
 		for(int i=0; i < rows-1; i++) {System.out.print("-");}
 		System.out.print("|");
 	}
+	
+	
 
+	/**
+	 * Calculates which rooms a user's piece can move into
+	 * 
+	 * @return list of rooms in range of user's piece
+	 */
+	public List<Room> possibleRooms(User user, int numMoves) {
+		return new ArrayList<>();
+	}
+	
 	/**
 	 * checks where a cell is clear for a player to move into
 	 * 
 	 * @return whether a player can move into this cell
 	 */
 	public boolean canMove() {return false;}
+	
+	
+	/**
+	 * Talk to me about this
+	 * 
+	 * @param move
+	 * @return
+	 */
+	public boolean execute(Move move) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	/**
+	 * Test whether a user is in a room
+	 * 
+	 * @param user
+	 * @return null if not in room. Room if in room
+	 */
+	public Room inRoom(User user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	private void loadMap() {
 		for(int i = 0; i<rows; i++) {

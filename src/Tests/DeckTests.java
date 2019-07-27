@@ -14,14 +14,14 @@ import swen225.cluedo.cards.Deck;
 
 class DeckTests {
 
-	@Test
-	void test0() {	//check isEmpty works
+	/** check isEmpty works */
+	@Test void test0() {	
 		Deck deck = new Deck();
 		assert(deck.isEmpty());
 	}
 	
-	@Test
-	void test1() {	//check randomCard removes card 
+	/** check randomCard removes card */
+	@Test void test1() {	
 		Deck deck = new Deck();
 		for (int i = 0; i < 21; i++) {
 			deck.randomCard();
@@ -29,8 +29,8 @@ class DeckTests {
 		assert(deck.isEmpty());
 	}
 	
-	@Test
-	void test2() {	//tests that get envelope returns 3 cards that include a weapon, room and person
+	/** tests that get envelope returns 3 cards that include a weapon, room and person */
+	@Test void test2() {	
 		Deck deck = new Deck();
 		List<Card> envelope = new ArrayList<>(deck.getEnvelopeContents());
 		assertFalse(envelope.get(0).cardType() == envelope.get(1).cardType());

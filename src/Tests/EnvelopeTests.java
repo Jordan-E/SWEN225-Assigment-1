@@ -12,22 +12,22 @@ import swen225.cluedo.cards.WeaponCard;
 
 class EnvelopeTests {
 
-	@Test
-	void test0() { //checks getCharacter returns a return card
+	/** checks getCharacter returns a return card */
+	@Test void test0() { 
 		Deck deck = new Deck();
 		Envelope envelope = new Envelope(deck.getEnvelopeContents());
 		assert(envelope.getCharacter()!=null);
 	}
 
-	@Test
-	void test1() { //checks getRoom returns a return card
+	/** checks getRoom returns a return card */
+	@Test void test1() { 
 		Deck deck = new Deck();
 		Envelope envelope = new Envelope(deck.getEnvelopeContents());
 		assert(envelope.getRoom()!=null);
 	}
 	
-	@Test
-	void test2() { //checks getWeapon returns a return card
+	/** checks getWeapon returns a return card */
+	@Test void test2() {
 		Deck deck = new Deck();
 		Envelope envelope = new Envelope(deck.getEnvelopeContents());
 		assert(envelope.getWeapon()!=null);

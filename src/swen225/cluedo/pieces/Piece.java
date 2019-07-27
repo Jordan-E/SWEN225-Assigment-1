@@ -5,11 +5,20 @@ package swen225.cluedo.pieces;
  * @author Ellisjord
  *
  */
-public interface Piece {
-	int getX();
+public abstract class Piece {
 	
-	int getY();
+	private String name;
 	
-	int move(int x, int y);
+	public Piece(String name) {
+		this.name = name;
+	}
+	
+	public abstract int getX();
+	
+	public abstract int getY();
+	
+	public abstract int move(int x, int y);
+	
+	public String getName() {return name;}
 }
 
