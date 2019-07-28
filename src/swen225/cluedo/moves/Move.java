@@ -10,7 +10,7 @@ public abstract class Move {
 		this.user = user;
 	}
 	
-	public abstract User getUser();
+	public User getUser() {return user;}
 	
 	public abstract String invalidMessage();
 

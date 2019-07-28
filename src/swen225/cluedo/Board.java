@@ -100,11 +100,11 @@ public class Board {
 	 * Talk to me about this
 	 * 
 	 * @param move
-	 * @return
+	 * @return whether the move was successful (valid)
 	 */
 	public boolean execute(Move move) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	/**

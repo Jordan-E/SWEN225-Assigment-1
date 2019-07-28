@@ -34,7 +34,9 @@ public class Cluedo {
 	 * Constructor
 	 * @param playerCount
 	 */
-	public Cluedo(int playerCount) {
+	public Cluedo() {
+		Scanner inputScanner = new Scanner(System.in);
+		Integer playerCount = getPlayerCount(inputScanner);
 		board = new Board(25,24);
 		
 		// initialize character pieces
@@ -58,7 +60,28 @@ public class Cluedo {
 		envelope = new Envelope(deck.getEnvelopeContents());
 		dealHands(deck);
 		
-		play();
+		play(inputScanner);
+	}
+	
+	private Integer getPlayerCount(Scanner input) {
+		System.out.println("How many people are playing? (3 to 6)");
+		Integer playerCount = 0;
+		
+		boolean validInput = false;
+		while (!validInput) {
+			String s = input.nextLine();
+			try {
+				playerCount = Integer.parseInt(s);
+				if (playerCount <= 6 && playerCount>= 3) validInput = true;
+				else throw new Error("Please enter a number between three and six.");
+			} catch (NumberFormatException e) {
+				System.out.println("\"" + s + "\" is not a number. Please enter a number between three and six.");
+			} catch (Error e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		return playerCount;
 	}
 	
 	/**
@@ -79,37 +102,42 @@ public class Cluedo {
 	/**
 	 * Play the game. This is were the high level logic should be
 	 */
-	private void play() {
-		User user = turnOrder.currentUser(); // User who's turn it is
-		int moves = rollDice(); // roll dice
-		
-		boolean validMove = false;
-		while (!validMove) {
-			Move move = moveSelection(user, moves);
-			if(board.execute(move)) validMove = true;
-			else System.out.println(move.invalidMessage());
+	private void play(Scanner inputScanner) {
+		while (turnOrder.playersLeft()) {
+			User user = turnOrder.currentUser(); // User who's turn it is
+			int moves = rollDice(); // roll dice
+			
+			System.out.println("\n" + board.toString());
+			System.out.println("\nIt is " + user.getName() + "'s turn.");
+			System.out.println("You roll a "+moves);
+			
+			boolean validMove = false;
+			while (!validMove) {
+				Move move = moveSelection(inputScanner, user, moves);
+				if(board.execute(move)) validMove = true;
+				else System.out.println(move.invalidMessage());
+			}
+			
+			Board.Room room = board.inRoom(user);
+			GuessMove guess = null;
+			if (room != null) guess = guessSelection(inputScanner, user);
+			if (guess != null) processGuess(guess);
+			
+			System.out.println("end of turn");
+			turnOrder.endTurn(); //end turn
 		}
-		
-		Board.Room room = board.inRoom(user);
-		GuessMove guess = null;
-		if (room != null) guess = guessSelection(user);
-		if (guess != null) processGuess(guess);
-		
-		turnOrder.endTurn(); //end turn
 	}
 	
 	/**
 	 * IO for first move of turn
+	 * Tells user where/how they can move
 	 * 
 	 * @param user
 	 * @param numMoves
 	 * @return the move the user wants to perform
 	 */
-	private Move moveSelection(User user, int numMoves) {
+	private Move moveSelection(Scanner inputScanner, User user, int numMoves) {
 		Move move = null;
-		
-		System.out.println(board.toString());
-		System.out.println("\nIt is " + user.getName() + "'s turn.");
 		
 		List<Board.Room> rooms = board.possibleRooms(user, numMoves);
 		int count = 1;
@@ -127,38 +155,59 @@ public class Cluedo {
 		for (Integer i = 1; i <= rooms.size(); i++) {validInput.add(i.toString());}
 		validInput.add("c");
 		validInput.add("g");
-		String input = getInput(validInput);
+		String input = getInput(inputScanner, validInput);
 		
 		// construct move
 		if (input.equals("c")) {
-			move = new CustomMove(user, numMoves);
+			move = customMoveDialogue(inputScanner, user, numMoves);
 		} else if (input.equals("g")) {
-			move = new EnvelopeMove(user);
+			move = envelopeMoveDialogue(inputScanner, user);
 		} else {
-			move = new RoomMove(user, rooms.get(Integer.parseInt(input)));
+			move = roomMoveDialogue(inputScanner, user, rooms.get(Integer.parseInt(input)));
 		}
 		
 		return move;
 	}
 	
-	private GuessMove guessSelection (User user) {
+	private GuessMove guessSelection (Scanner inputScanner, User user) {
 		assert board.inRoom(user) != null;
 		
 		CharacterPiece character;
 		WeaponPiece weapon;
+		Board.Room room = board.inRoom(user);
 		
-		System.out.println(user + " has an opportunity to guess in the " + board.inRoom(user));
-		character = chooseCharacter();
-		weapon = chooseWeapon();
+		System.out.println(user + " has an opportunity to guess in " + board.inRoom(user));
+		character = chooseCharacter(inputScanner);
+		weapon = chooseWeapon(inputScanner);
 		
-		return new GuessMove(user, character, weapon);
+		return new GuessMove(user, character, weapon, room);
 	}
 	
 	private void processGuess(GuessMove guess) {
-		
+		System.out.println("Murderer - " + guess.getCharacter().toString() + "\tWeapon - " + guess.getWeapon().toString() + "\tRoom - " + guess.getRoom());
+		System.out.println("#### NOT IMPLEMENTED YET ####");
 	}
 	
-	private Piece choosePiece(String message, List<? extends Piece> pieces) {
+	
+	private CustomMove customMoveDialogue(Scanner inputScanner, User user, int numMoves) {
+		//TODO
+		System.out.println("#### customMoveDialogue NOT IMPLEMENTED ####");
+		return new CustomMove(user, numMoves);
+	}
+	
+	private EnvelopeMove envelopeMoveDialogue(Scanner inputScanner, User user) {
+		//TODO
+		System.out.println("#### envelopeMoveDialogue NOT IMPLEMENTED ####");
+		return new EnvelopeMove(user);
+	}
+	
+	private RoomMove roomMoveDialogue(Scanner inputScanner, User user, Board.Room room) {
+		//TODO
+		System.out.println("#### roomMoveDialogue NOT IMPLEMENTED ####");
+		return new RoomMove(user, room);
+	}
+	
+	private Piece choosePiece(Scanner inputScanner, String message, List<? extends Piece> pieces) {
 		System.out.println(message);
 		int count = 1;
 		for (Piece piece : pieces) {
@@ -170,17 +219,17 @@ public class Cluedo {
 		for (Integer i = 1; i <= pieces.size(); i++) {
 			validInput.add(i.toString());
 		}
-		String input = getInput(validInput);
+		String input = getInput(inputScanner, validInput);
 		
-		return pieces.get(Integer.parseInt(input) + 1);
+		return pieces.get(Integer.parseInt(input) - 1);
 	}
 	
-	private CharacterPiece chooseCharacter() {
-		return (CharacterPiece) choosePiece("Who do you think the murderer was?", characterPieces);
+	private CharacterPiece chooseCharacter(Scanner inputScanner) {
+		return (CharacterPiece) choosePiece(inputScanner, "Who do you think the murderer was?", characterPieces);
 	}
 	
-	private WeaponPiece chooseWeapon() {
-		return (WeaponPiece) choosePiece("What do you think the murder weapon was?", characterPieces);
+	private WeaponPiece chooseWeapon(Scanner inputScanner) {
+		return (WeaponPiece) choosePiece(inputScanner, "What do you think the murder weapon was?", weaponPieces);
 	}
 	
 	/**
@@ -197,13 +246,12 @@ public class Cluedo {
 	 * @param valid List of valid input must be lower case
 	 * @return valid input
 	 */
-	private String getInput(List<String> valid) {
-		Scanner in = new Scanner(System.in);
+	private String getInput(Scanner inputScanner, List<String> valid) {
 		boolean validInput = false;
 		String input = "";
 		
 		while (!validInput) {
-			input = in.nextLine().toLowerCase();
+			input = inputScanner.nextLine().toLowerCase();
 			if (valid.contains(input)) {
 				validInput = true;
 			}else {
@@ -220,28 +268,7 @@ public class Cluedo {
 	}
 	
 	
-	
-	
-	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
-		System.out.println("How many people are playing? (3 to 6)");
-		Integer playerCount = 0;
-		
-		boolean validInput = false;
-		while (!validInput) {
-			String s = in.nextLine();
-			try {
-				playerCount = Integer.parseInt(s);
-				if (playerCount <= 6 && playerCount>= 3) validInput = true;
-				else throw new Error("Please enter a number between three and six.");
-			} catch (NumberFormatException e) {
-				System.out.println("\"" + s + "\" is not a number. Please enter a number between three and six.");
-			} catch (Error e) {
-				System.out.println(e.getMessage());
-			}
-		}
-		in.close();
-		
-		new Cluedo(playerCount);
+	public static void main(String[] args) {	
+		new Cluedo();
 	}
 }
