@@ -20,5 +20,7 @@ public abstract class Piece {
 	public abstract int move(int x, int y);
 	
 	public String getName() {return name;}
+	
+	public String toString() {return name;}
 }
 
