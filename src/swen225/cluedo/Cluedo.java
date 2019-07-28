@@ -192,7 +192,8 @@ public class Cluedo {
 	private CustomMove customMoveDialogue(Scanner inputScanner, User user, int numMoves) {
 		//TODO
 		System.out.println("#### customMoveDialogue NOT IMPLEMENTED ####");
-		return new CustomMove(user, numMoves);
+		//return new CustomMove(user, numMoves);
+		return null;
 	}
 	
 	private EnvelopeMove envelopeMoveDialogue(Scanner inputScanner, User user) {

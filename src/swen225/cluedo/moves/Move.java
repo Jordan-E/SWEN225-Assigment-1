@@ -4,7 +4,7 @@ import swen225.cluedo.User;
 
 public abstract class Move {
 	
-	private User user;
+	protected User user;
 	
 	public Move (User user) {
 		this.user = user;

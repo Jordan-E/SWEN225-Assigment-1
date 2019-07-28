@@ -16,6 +16,7 @@ public class Board {
 	
 	public enum Room {Kitchen, BallRoom, Conservatory, BilliardRoom, Library, Study, Hall, Lounge, DiningRoom}
 	
+	
 	private String[][] boardData = {
 		{"-","-","-","-","-","-","-","-","-"," ","-","-","-","-"," ","-","-","-","-","-","-","-","-","-"},//1
 		{"k","k","k","k","k","k","-"," "," "," ","b","b","b","b"," "," "," ","-","c","c","c","c","c","c"},//2
@@ -42,16 +43,119 @@ public class Board {
 		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","h"," "," ","s","s","s","s","s","s","s"},//23
 		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","h"," "," ","s","s","s","s","s","s","s"},//24
 		{"o","o","o","o","o","o","-"," ","-","h","h","h","h","h","h","-"," ","-","s","s","s","s","s","s"}//25
-	};
+	};  //1   2   3   4   5   6   7   8  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25
+	
 	
 	public Board(int row, int col) {
 		board = new Cell[row][col];
 		if (row != 25 || col != 24) System.out.println("Board dimensions not supported");	//need to add error otherwise game will continue
 		this.rows = row;
 		this.cols = col;
-		
+		loadBoard();
 		printBoard();
 	}
+	
+	
+	/**
+	 * takes the boardData array and makes board with the correct Cells using the boardData data
+	 */
+	private void loadBoard() {
+		for (int i = 0; i < boardData.length; i++) {
+			for (int j = 0; j < boardData[i].length; j++) {
+				if(boardData[i][j] == "-") {
+					board[i][j] = new Cell("OUT_OF_BOUNDS", "-");
+				}
+				else if(boardData[i][j] == " ") {
+					board[i][j] = new Cell("HALL", " ");
+				}
+				else {//must be a letter 
+					
+					Cell newCell;	
+
+					
+					if(boardData[i][j] == "k") {
+						newCell = new Cell("OUT_OF_BOUNDS", "k");
+						newCell.setRoom(Room.Kitchen);
+					}
+					else if(boardData[i][j] == "K") {
+						newCell = new Cell("ROOM", "K");
+						newCell.setRoom(Room.Kitchen);
+					}
+					else if(boardData[i][j] == "b") {
+						newCell = new Cell("OUT_OF_BOUNDS", "b");
+						newCell.setRoom(Room.BallRoom);
+					}
+					else if(boardData[i][j] == "B") {
+						newCell = new Cell("ROOM", "B");
+						newCell.setRoom(Room.BallRoom);
+					}
+					else if(boardData[i][j] == "c") {
+						newCell = new Cell("OUT_OF_BOUNDS", "c");
+						newCell.setRoom(Room.Conservatory);
+					}
+					else if(boardData[i][j] == "C") {
+						newCell = new Cell("ROOM", "C");
+						newCell.setRoom(Room.Conservatory);
+					}
+					else if(boardData[i][j] == "i") {
+						newCell = new Cell("OUT_OF_BOUNDS", "i");
+						newCell.setRoom(Room.BilliardRoom);
+					}
+					else if(boardData[i][j] == "I") {
+						newCell = new Cell("ROOM", "I");
+						newCell.setRoom(Room.BilliardRoom);
+					}
+					else if(boardData[i][j] == "l") {
+						newCell = new Cell("OUT_OF_BOUNDS", "l");
+						newCell.setRoom(Room.Library);
+					}
+					else if(boardData[i][j] == "L") {
+						newCell = new Cell("ROOM", "L");
+						newCell.setRoom(Room.Library);
+					}
+					else if(boardData[i][j] == "s") {
+						newCell = new Cell("OUT_OF_BOUNDS", "s");
+						newCell.setRoom(Room.Study);
+					}
+					else if(boardData[i][j] == "S") {
+						newCell = new Cell("ROOM", "S");
+						newCell.setRoom(Room.Study);
+					}
+					else if(boardData[i][j] == "h") {
+						newCell = new Cell("OUT_OF_BOUNDS", "h");
+						newCell.setRoom(Room.Hall);
+					}
+					else if(boardData[i][j] == "H") {
+						newCell = new Cell("ROOM", "H");
+						newCell.setRoom(Room.Hall);
+					}
+					else if(boardData[i][j] == "o") {
+						newCell = new Cell("OUT_OF_BOUNDS", "o");
+						newCell.setRoom(Room.Lounge);
+					}
+					else if(boardData[i][j] == "O") {
+						newCell = new Cell("ROOM", "O");
+						newCell.setRoom(Room.Lounge);
+					}
+					else if(boardData[i][j] == "d") {
+						newCell = new Cell("OUT_OF_BOUNDS", "d");
+						newCell.setRoom(Room.DiningRoom);
+					}
+					else if (boardData[i][j] == "D") {
+						newCell = new Cell("ROOM", "D");
+						newCell.setRoom(Room.DiningRoom);
+					}	
+					else {
+						throw new Error("Inncorect letter in board data. Inncorect letter: " + boardData[i][j]);
+					}
+					
+					board[i][j] = newCell;
+					
+				}
+			}
+		}
+	}
+	
 	
 	/**
 	 * move player
@@ -67,7 +171,7 @@ public class Board {
 		for(int i = 0; i<rows; i++) {
 			System.out.print("|");
 		    for(int j = 0; j<cols; j++) {
-		        System.out.print(boardData[i][j]);
+		        System.out.print(board[i][j]);
 		    }
 		    System.out.print("|");
 		    System.out.println();
@@ -107,6 +211,14 @@ public class Board {
 		return true;
 	}
 	
+	public Cell[][] getBoard() {
+		return board;
+	}
+
+	public void setBoard(Cell[][] board) {
+		this.board = board;
+	}
+
 	/**
 	 * Test whether a user is in a room
 	 * 
@@ -114,7 +226,12 @@ public class Board {
 	 * @return null if not in room. Room if in room
 	 */
 	public Room inRoom(User user) {
-		// TODO Auto-generated method stub
+		int x = user.getCharacterPiece().getX();
+		int y = user.getCharacterPiece().getY();
+		if (board[x][y].getCellType() == CellType.ROOM) {
+			Room room = board[x][y].getRoom();
+			return room;
+		}
 		return null;
 	}
 	

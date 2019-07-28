@@ -5,7 +5,12 @@ package swen225.cluedo.pieces;
  * @author Ellisjord
  *
  */
-public class Character implements Piece{
+public class Character extends Piece{
+
+	public Character(String name) {
+		super(name);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
 	public int getX() {

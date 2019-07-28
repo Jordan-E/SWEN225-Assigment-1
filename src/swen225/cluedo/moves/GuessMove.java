@@ -29,7 +29,7 @@ public class GuessMove extends Move{
 
 	@Override
 	public boolean isValid() {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 

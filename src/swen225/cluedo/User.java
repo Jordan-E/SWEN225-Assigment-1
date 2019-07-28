@@ -30,4 +30,8 @@ public class User {
 	public void addCard(Card card) {hand.add(card);}
 	
 	public String getName() {return name;}
+	
+	public CharacterPiece getCharacterPiece() {
+		return character;
+	}
 }
