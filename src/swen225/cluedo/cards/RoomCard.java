@@ -1,5 +1,7 @@
 package swen225.cluedo.cards;
 
+import swen225.cluedo.Board;
+
 /**
  * Card for each room in the game of cluedo
  * 
@@ -26,5 +28,13 @@ public class RoomCard implements Card{
 		return description;
 	}
 	
-
+	/**
+	 * Determine if this card represents the provided room
+	 * @param room
+	 * @return
+	 */
+	public boolean represents(Board.Room room) {
+		//TODO
+		return true; //placeholder
+	}
 }

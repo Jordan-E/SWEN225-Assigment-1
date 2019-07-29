@@ -26,5 +26,15 @@ public class CharacterCard implements Card{
 	public String toString() {
 		return description;
 	}
+	
+	/**
+	 * Determine if this card represents the provided character
+	 * @param character
+	 * @return
+	 */
+	public boolean represents(String character) {
+		//TODO
+		return true; //placeholder
+	}
 
 }

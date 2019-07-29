@@ -27,4 +27,13 @@ public class WeaponCard implements Card{
 		return description;
 	}
 	
+	/**
+	 * Determine if this card represents the provided weapon
+	 * @param weapon
+	 * @return
+	 */
+	public boolean represents(String weapon) {
+		//TODO
+		return true; //placeholder
+	}
 }

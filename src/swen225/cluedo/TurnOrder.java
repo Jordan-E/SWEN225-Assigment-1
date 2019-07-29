@@ -34,6 +34,13 @@ public class TurnOrder{
 	}
 	
 	/**
+	 * 
+	 */
+	public void removeAll() {
+		guessing.clear();
+	}
+	
+	/**
 	 * Reset order to default order
 	 */
 	public void resetOrder() {
