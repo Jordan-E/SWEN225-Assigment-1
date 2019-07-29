@@ -1,5 +1,6 @@
 package swen225.cluedo;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -123,9 +124,11 @@ public class Cluedo {
 			if (room != null) guess = guessSelection(inputScanner, user);
 			if (guess != null) processGuess(guess);
 			
-			System.out.println("end of turn");
+			System.out.println("End of turn");
 			turnOrder.endTurn(); //end turn
 		}
+		
+		System.out.println("---- END OF GAME ----");
 	}
 	
 	/**
@@ -161,7 +164,21 @@ public class Cluedo {
 		if (input.equals("c")) {
 			move = customMoveDialogue(inputScanner, user, numMoves);
 		} else if (input.equals("g")) {
-			move = envelopeMoveDialogue(inputScanner, user);
+			EnvelopeMove eMove = envelopeMoveDialogue(inputScanner, user);
+			move = eMove;
+			
+			System.out.println(user.getName() + " guessed that " + eMove.getCharacter() + " is the murderer, " + 
+					eMove.getWeapon() + " is the murder weapon, and " + eMove.getRoom() + " is the location.");
+			if (envelope.processGuess(eMove)) {
+				// end game. They guessed correctly
+				System.out.println(move.getUser().getName() + " guessed the contents of the envelope correctly.");
+				System.out.println("The murderer was " + eMove.getCharacter() + " with a " + eMove.getWeapon() + " in the " + eMove.getRoom() + ".");
+				turnOrder.removeAll();
+			} else {
+				// Incorrect guess. Remove this player from the game (can still be called on for disproving guesses)
+				System.out.println(move.getUser().getName() + " guessed the contents of the envelope incorrectly.");
+				turnOrder.removeUser(user);
+			}
 		} else {
 			move = roomMoveDialogue(inputScanner, user, rooms.get(Integer.parseInt(input)));
 		}
@@ -172,34 +189,43 @@ public class Cluedo {
 	private GuessMove guessSelection (Scanner inputScanner, User user) {
 		assert board.inRoom(user) != null;
 		
-		CharacterPiece character;
-		WeaponPiece weapon;
-		Board.Room room = board.inRoom(user);
-		
 		System.out.println(user + " has an opportunity to guess in " + board.inRoom(user));
-		character = chooseCharacter(inputScanner);
-		weapon = chooseWeapon(inputScanner);
+		CharacterPiece character = chooseCharacter(inputScanner);
+		WeaponPiece weapon = chooseWeapon(inputScanner);
+		Board.Room room = board.inRoom(user);
 		
 		return new GuessMove(user, character, weapon, room);
 	}
 	
 	private void processGuess(GuessMove guess) {
-		System.out.println("Murderer - " + guess.getCharacter().toString() + "\tWeapon - " + guess.getWeapon().toString() + "\tRoom - " + guess.getRoom());
+		System.out.println("Murderer - " + guess.getCharacter().toString() + "\tWeapon - " 
+				+ guess.getWeapon().toString() + "\tRoom - " + guess.getRoom());
 		System.out.println("#### NOT IMPLEMENTED YET ####");
 	}
 	
-	
 	private CustomMove customMoveDialogue(Scanner inputScanner, User user, int numMoves) {
-		//TODO
-		System.out.println("#### customMoveDialogue NOT IMPLEMENTED ####");
-		//return new CustomMove(user, numMoves);
-		return null;
+		String input;
+		
+		while (true) {
+			System.out.println("Please enter your movements in the form direction (N,E,S,W) followed by number of steps (1,2,3,..)");
+			System.out.println("For movements in multiple directions seperate each move with a comma e.g. S3,E4");
+			
+			input = inputScanner.nextLine();
+			try {
+				return new CustomMove(user, numMoves, input);
+			} catch (InvalidParameterException e) {
+				//repeat
+			}
+		}
 	}
 	
 	private EnvelopeMove envelopeMoveDialogue(Scanner inputScanner, User user) {
-		//TODO
-		System.out.println("#### envelopeMoveDialogue NOT IMPLEMENTED ####");
-		return new EnvelopeMove(user);
+		System.out.println(user.getName() + " is guessing the contents of the envelope.");
+		String character = chooseCharacter(inputScanner).getName();
+		String weapon = chooseWeapon(inputScanner).getName();
+		Board.Room room = chooseRoom(inputScanner);
+		
+		return new EnvelopeMove(user, character, weapon, room);
 	}
 	
 	private RoomMove roomMoveDialogue(Scanner inputScanner, User user, Board.Room room) {
@@ -231,6 +257,24 @@ public class Cluedo {
 	
 	private WeaponPiece chooseWeapon(Scanner inputScanner) {
 		return (WeaponPiece) choosePiece(inputScanner, "What do you think the murder weapon was?", weaponPieces);
+	}
+	
+	private Board.Room chooseRoom(Scanner inputScanner) {
+		System.out.println("Which room do you think the murder took place in?");
+		
+		Board.Room[] rooms = Board.Room.values();
+		int count = 1;
+		for (Board.Room room : rooms) {
+			System.out.println("\t(" + count++ + ") " + room);
+		}
+		
+		List<String> validInput = new ArrayList<>();
+		for (Integer i = 1; i <= rooms.length; i++) {
+			validInput.add(i.toString());
+		}
+		
+		String input = getInput(inputScanner, validInput);
+		return rooms[Integer.parseInt(input)-1];
 	}
 	
 	/**

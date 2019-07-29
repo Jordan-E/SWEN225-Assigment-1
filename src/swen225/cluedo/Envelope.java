@@ -3,6 +3,7 @@ package swen225.cluedo;
 import java.util.Set;
 
 import swen225.cluedo.cards.*;
+import swen225.cluedo.moves.EnvelopeMove;
 
 /**
  * 
@@ -11,34 +12,35 @@ import swen225.cluedo.cards.*;
  */
 public class Envelope {
 	
-	Set<Card> cards;
+	private CharacterCard character;
+	private WeaponCard weapon;
+	private RoomCard room;
+	
+	public Envelope(CharacterCard character, WeaponCard weapon, RoomCard room) {
+		this.character = character;
+		this.weapon = weapon;
+		this.room = room;
+	}
 	
 	public Envelope(Set<Card> cards) {
-		this.cards = cards;
+		for (Card c : cards) {
+			if (c instanceof CharacterCard) character = (CharacterCard) c;
+			else if (c instanceof WeaponCard) weapon = (WeaponCard) c;
+			else if (c instanceof RoomCard) room = (RoomCard) c;
+		}
 	}
 
-	public Set<Card> getCards() {
-		return cards;
-	}
-	
-	public Card getWeapon() {
-		for (Card card : cards) {
-			if(card instanceof WeaponCard) return card;
-		}
-		return null;
-	}
-	
-	public Card getCharacter() {
-		for (Card card : cards) {
-			if(card instanceof CharacterCard) return card;
-		}
-		return null;
-	}
-	
-	public Card getRoom() {
-		for (Card card : cards) {
-			if(card instanceof RoomCard) return card;
-		}
-		return null;
+	public CharacterCard getCharacter() {return character;}
+
+	public WeaponCard getWeapon() {return weapon;}
+
+	public RoomCard getRoom() {return room;}
+
+	public boolean processGuess(EnvelopeMove move) {		
+		if (!character.represents(move.getCharacter())) return false;
+		if (!weapon.represents(move.getWeapon())) return false;
+		if (!room.represents(move.getRoom())) return false;
+		
+		return true;
 	}
 }

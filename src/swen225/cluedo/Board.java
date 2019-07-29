@@ -52,7 +52,6 @@ public class Board {
 		this.rows = row;
 		this.cols = col;
 		loadBoard();
-		printBoard();
 	}
 	
 	
@@ -62,96 +61,7 @@ public class Board {
 	private void loadBoard() {
 		for (int i = 0; i < boardData.length; i++) {
 			for (int j = 0; j < boardData[i].length; j++) {
-				if(boardData[i][j] == "-") {
-					board[i][j] = new Cell("OUT_OF_BOUNDS", "-");
-				}
-				else if(boardData[i][j] == " ") {
-					board[i][j] = new Cell("HALL", " ");
-				}
-				else {//must be a letter 
-					
-					Cell newCell;	
-
-					
-					if(boardData[i][j] == "k") {
-						newCell = new Cell("OUT_OF_BOUNDS", "k");
-						newCell.setRoom(Room.Kitchen);
-					}
-					else if(boardData[i][j] == "K") {
-						newCell = new Cell("ROOM", "K");
-						newCell.setRoom(Room.Kitchen);
-					}
-					else if(boardData[i][j] == "b") {
-						newCell = new Cell("OUT_OF_BOUNDS", "b");
-						newCell.setRoom(Room.BallRoom);
-					}
-					else if(boardData[i][j] == "B") {
-						newCell = new Cell("ROOM", "B");
-						newCell.setRoom(Room.BallRoom);
-					}
-					else if(boardData[i][j] == "c") {
-						newCell = new Cell("OUT_OF_BOUNDS", "c");
-						newCell.setRoom(Room.Conservatory);
-					}
-					else if(boardData[i][j] == "C") {
-						newCell = new Cell("ROOM", "C");
-						newCell.setRoom(Room.Conservatory);
-					}
-					else if(boardData[i][j] == "i") {
-						newCell = new Cell("OUT_OF_BOUNDS", "i");
-						newCell.setRoom(Room.BilliardRoom);
-					}
-					else if(boardData[i][j] == "I") {
-						newCell = new Cell("ROOM", "I");
-						newCell.setRoom(Room.BilliardRoom);
-					}
-					else if(boardData[i][j] == "l") {
-						newCell = new Cell("OUT_OF_BOUNDS", "l");
-						newCell.setRoom(Room.Library);
-					}
-					else if(boardData[i][j] == "L") {
-						newCell = new Cell("ROOM", "L");
-						newCell.setRoom(Room.Library);
-					}
-					else if(boardData[i][j] == "s") {
-						newCell = new Cell("OUT_OF_BOUNDS", "s");
-						newCell.setRoom(Room.Study);
-					}
-					else if(boardData[i][j] == "S") {
-						newCell = new Cell("ROOM", "S");
-						newCell.setRoom(Room.Study);
-					}
-					else if(boardData[i][j] == "h") {
-						newCell = new Cell("OUT_OF_BOUNDS", "h");
-						newCell.setRoom(Room.Hall);
-					}
-					else if(boardData[i][j] == "H") {
-						newCell = new Cell("ROOM", "H");
-						newCell.setRoom(Room.Hall);
-					}
-					else if(boardData[i][j] == "o") {
-						newCell = new Cell("OUT_OF_BOUNDS", "o");
-						newCell.setRoom(Room.Lounge);
-					}
-					else if(boardData[i][j] == "O") {
-						newCell = new Cell("ROOM", "O");
-						newCell.setRoom(Room.Lounge);
-					}
-					else if(boardData[i][j] == "d") {
-						newCell = new Cell("OUT_OF_BOUNDS", "d");
-						newCell.setRoom(Room.DiningRoom);
-					}
-					else if (boardData[i][j] == "D") {
-						newCell = new Cell("ROOM", "D");
-						newCell.setRoom(Room.DiningRoom);
-					}	
-					else {
-						throw new Error("Inncorect letter in board data. Inncorect letter: " + boardData[i][j]);
-					}
-					
-					board[i][j] = newCell;
-					
-				}
+				board[i][j] = new Cell(boardData[i][j]);
 			}
 		}
 	}
@@ -166,22 +76,25 @@ public class Board {
 	 * print out the board as text into the output.
 	 */
 	public void printBoard() {
-		//TODO please change this to a .toString() method
-		//System.out.println("|------------------------|");
-		for(int i = 0; i<rows; i++) {
-			System.out.print("|");
-		    for(int j = 0; j<cols; j++) {
-		        System.out.print(board[i][j]);
-		    }
-		    System.out.print("|");
-		    System.out.println();
-		}
-		System.out.print("|");
-		for(int i=0; i < rows-1; i++) {System.out.print("-");}
-		System.out.print("|");
+		System.out.println(toString());
 	}
 	
-	
+	public String toString() {
+		String s = "";
+		
+		//s+=("|------------------------|\n");
+		for(int i = 0; i<rows; i++) {
+			s += "|";
+		    for(int j = 0; j<cols; j++) {
+		        s += board[i][j];
+		    }
+		    s += "|\n";
+		}
+		s += "|";
+		for(int i=0; i < rows-1; i++) {s += "-";}
+		s += "|";
+		return s;
+	}
 
 	/**
 	 * Calculates which rooms a user's piece can move into
@@ -228,7 +141,7 @@ public class Board {
 	public Room inRoom(User user) {
 		int x = user.getCharacterPiece().getX();
 		int y = user.getCharacterPiece().getY();
-		if (board[x][y].getCellType() == CellType.ROOM) {
+		if (board[x][y].isRoom()) {
 			Room room = board[x][y].getRoom();
 			return room;
 		}
