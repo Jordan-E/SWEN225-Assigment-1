@@ -114,7 +114,9 @@ public class Board {
 	
 	
 	/**
-	 * Talk to me about this
+	 * When given a move. 
+	 * Checks the move is valid.
+	 * Moves the relevant pieces.
 	 * 
 	 * @param move
 	 * @return whether the move was successful (valid)

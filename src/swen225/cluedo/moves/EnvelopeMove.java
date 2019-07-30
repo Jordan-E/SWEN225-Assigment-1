@@ -43,6 +43,12 @@ public class EnvelopeMove extends Move {
 	public Board.Room getRoom() {
 		return room;
 	}
+
+	@Override
+	public boolean apply() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 	
 }
