@@ -15,4 +15,10 @@ public abstract class Move {
 	public abstract String invalidMessage();
 
 	public abstract boolean isValid();
+	
+	/**
+	 * 
+	 * @return whether it was successfully applied
+	 */
+	public abstract boolean apply();
 }

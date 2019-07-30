@@ -34,4 +34,10 @@ public class RoomMove extends Move{
 		return null;
 	}
 
+	@Override
+	public boolean apply() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

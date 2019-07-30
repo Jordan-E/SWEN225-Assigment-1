@@ -108,6 +108,12 @@ public class CustomMove extends Move{
 		return user;
 	}
 
+	@Override
+	public boolean apply() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
 
 class Step {

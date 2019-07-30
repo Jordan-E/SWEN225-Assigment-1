@@ -57,7 +57,7 @@ public class Cluedo {
 		}
 		
 		// distribute cards
-		Deck deck = new Deck();
+		Deck deck = new Deck(); //TODO make this take names, weapons and rooms
 		envelope = new Envelope(deck.getEnvelopeContents());
 		dealHands(deck);
 		
@@ -122,7 +122,10 @@ public class Cluedo {
 			Board.Room room = board.inRoom(user);
 			GuessMove guess = null;
 			if (room != null) guess = guessSelection(inputScanner, user);
-			if (guess != null) processGuess(guess);
+			if (guess != null) {
+				board.execute(guess); // move the pieces into the guessing room
+				processGuess(guess);
+			}
 			
 			System.out.println("End of turn");
 			turnOrder.endTurn(); //end turn
@@ -201,6 +204,8 @@ public class Cluedo {
 		System.out.println("Murderer - " + guess.getCharacter().toString() + "\tWeapon - " 
 				+ guess.getWeapon().toString() + "\tRoom - " + guess.getRoom());
 		System.out.println("#### NOT IMPLEMENTED YET ####");
+		
+		
 	}
 	
 	private CustomMove customMoveDialogue(Scanner inputScanner, User user, int numMoves) {
