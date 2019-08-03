@@ -11,7 +11,16 @@ public class Cell {
 	private final Room room;
 	private final String letterValue;
 	private boolean isDoorway = false;
+	private boolean isOccupied = false;
 	
+	public boolean isOccupied() {
+		return isOccupied;
+	}
+
+	public void setOccupied(boolean isOccupied) {
+		this.isOccupied = isOccupied;
+	}
+
 	private enum CellType {ROOM, HALLWAY, OUT_OF_BOUNDS}
 
 	public Cell(String letterValue) {
@@ -59,5 +68,7 @@ public class Cell {
 	public String toString() {
 		return letterValue;
 	}
+
+
 }
 

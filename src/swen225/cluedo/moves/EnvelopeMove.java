@@ -27,7 +27,7 @@ public class EnvelopeMove extends Move {
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean isValid(Board board) {
 		// TODO Auto-generated method stub
 		return false;
 	}

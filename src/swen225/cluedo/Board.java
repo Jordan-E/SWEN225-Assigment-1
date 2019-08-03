@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import swen225.cluedo.moves.Move;
+import swen225.cluedo.pieces.CharacterPiece;
 
 /**
  * 
@@ -13,6 +14,7 @@ public class Board {
 	private Cell[][] board;
 	private int rows;
 	private int cols;
+	private List<CharacterPiece> characterPieces;
 	
 	public enum Room {Kitchen, BallRoom, Conservatory, BilliardRoom, Library, Study, Hall, Lounge, DiningRoom}
 	
@@ -43,14 +45,15 @@ public class Board {
 		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","h"," "," ","s","s","s","s","s","s","s"},//23
 		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","h"," "," ","s","s","s","s","s","s","s"},//24
 		{"o","o","o","o","o","o","-"," ","-","h","h","h","h","h","h","-"," ","-","s","s","s","s","s","s"}//25
-	};  //1   2   3   4   5   6   7   8  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25
+	};  //1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  
 	
 	
-	public Board(int row, int col) {
-		board = new Cell[row][col];
+	public Board(int row, int col, List<CharacterPiece> characterPieces) {
+		board = new Cell[row][col]; //[25][24]
 		if (row != 25 || col != 24) System.out.println("Board dimensions not supported");	//need to add error otherwise game will continue
 		this.rows = row;
 		this.cols = col;
+		this.characterPieces = characterPieces;
 		loadBoard();
 	}
 	
@@ -63,6 +66,9 @@ public class Board {
 			for (int j = 0; j < boardData[i].length; j++) {
 				board[i][j] = new Cell(boardData[i][j]);
 			}
+		}	
+		for (int i = 0; i < characterPieces.size(); i++) {
+			board[characterPieces.get(i).getX()][characterPieces.get(i).getY()].setOccupied(true);
 		}
 	}
 	
@@ -86,7 +92,11 @@ public class Board {
 		for(int i = 0; i<rows; i++) {
 			s += "|";
 		    for(int j = 0; j<cols; j++) {
-		        s += board[i][j];
+		    	if (!board[i][j].isOccupied()) {
+		    		s += board[i][j];
+				}
+		    	else {s += "*";}
+		        
 		    }
 		    s += "|\n";
 		}
@@ -110,8 +120,13 @@ public class Board {
 	 * 
 	 * @return whether a player can move into this cell
 	 */
-	public boolean canMove() {return false;}
-	
+	public boolean canMove(Cell cell) {
+		if (cell.isOccupied() /*|| cell.getCellType() == CellType.OUT_OF_BOUNDS)*/) {
+			return false;
+		}
+		return true;
+	}
+		
 	
 	/**
 	 * When given a move. 
@@ -122,8 +137,12 @@ public class Board {
 	 * @return whether the move was successful (valid)
 	 */
 	public boolean execute(Move move) {
-		// TODO Auto-generated method stub
-		return true;
+		if (move.isValid(this)) {
+			move.apply();
+			return true;
+		}
+		else {return false;}
+		
 	}
 	
 	public Cell[][] getBoard() {
@@ -150,11 +169,5 @@ public class Board {
 		return null;
 	}
 	
-	private void loadMap() {
-		for(int i = 0; i<rows; i++) {
-		    for(int j = 0; j<cols; j++) {
-		        
-		    }
-		}
-	}
+
 }

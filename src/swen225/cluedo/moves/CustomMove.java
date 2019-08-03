@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import swen225.cluedo.Board;
 import swen225.cluedo.User;
 
 /**
@@ -56,7 +57,17 @@ public class CustomMove extends Move{
 
 	
 	@Override
-	public boolean isValid() {return true;}
+	public boolean isValid(Board board) {
+		for (int i = 0; i < steps.size(); i++) {
+			if (!canMove(steps.get(i))) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	private boolean canMove(Step steps) {
 //		if(finalX < 0 || finalX > board.length || finalY < 0 || finalY > board[0].length) {return false;} //move would take user off the board
 //		
 //		if(direction == Direction.SOUTH) {
@@ -78,10 +89,10 @@ public class CustomMove extends Move{
 //			for (int i = xPosition; i > finalX; i--) {
 //				if(board[yPosition][xPosition].getCellType() == CellType.OUT_OF_BOUNDS) {return false;}
 //			}
-//		}	
-//		
-//		return true;
-//	}
+//		}
+		
+		return false;
+	}
 
 	/**
 	 * calculates the finishing position of the piece after completing the move
@@ -132,6 +143,14 @@ class Step {
 		}
 	}	
 	
+	public Direction getDir() {
+		return dir;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
 	private Direction processDirection(String input) {
 		Direction dir;
 		

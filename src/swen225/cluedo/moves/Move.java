@@ -1,5 +1,6 @@
 package swen225.cluedo.moves;
 
+import swen225.cluedo.Board;
 import swen225.cluedo.User;
 
 public abstract class Move {
@@ -14,11 +15,12 @@ public abstract class Move {
 	
 	public abstract String invalidMessage();
 
-	public abstract boolean isValid();
+	public abstract boolean isValid(Board board);
 	
 	/**
 	 * 
 	 * @return whether it was successfully applied
 	 */
 	public abstract boolean apply();
+
 }

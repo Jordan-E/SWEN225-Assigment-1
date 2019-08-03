@@ -38,12 +38,14 @@ public class Cluedo {
 	public Cluedo() {
 		Scanner inputScanner = new Scanner(System.in);
 		Integer playerCount = getPlayerCount(inputScanner);
-		board = new Board(25,24);
+		
 		
 		// initialize character pieces
 		for (int i = 0; i < names.length; i++) {
 			characterPieces.add(new swen225.cluedo.pieces.CharacterPiece(names[i]));
 		}
+		
+		board = new Board(25,24, characterPieces);
 		
 		// initialize weapon pieces
 		for (int i = 0; i < weapons.length; i++) {
@@ -64,6 +66,10 @@ public class Cluedo {
 		play(inputScanner);
 	}
 	
+	public List<CharacterPiece> getCharacterPieces() {
+		return characterPieces;
+	}
+
 	private Integer getPlayerCount(Scanner input) {
 		System.out.println("How many people are playing? (3 to 6)");
 		Integer playerCount = 0;

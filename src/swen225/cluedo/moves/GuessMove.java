@@ -28,7 +28,7 @@ public class GuessMove extends Move{
 	}
 
 	@Override
-	public boolean isValid() {
+	public boolean isValid(Board board) {
 		
 		return false;
 	}
