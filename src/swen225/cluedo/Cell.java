@@ -52,6 +52,10 @@ public class Cell {
 		}
 	}
 	
+	public boolean isDoorway() {
+		return isDoorway;
+	}
+	
 	public boolean isRoom() {
 		return room != null;
 	}

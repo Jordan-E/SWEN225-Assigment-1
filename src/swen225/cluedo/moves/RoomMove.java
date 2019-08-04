@@ -5,6 +5,8 @@ import swen225.cluedo.User;
 
 /**
  * Move to "teleport" into a room that is within range
+ * 
+ * @author EllisJord
  */
 
 public class RoomMove extends Move{

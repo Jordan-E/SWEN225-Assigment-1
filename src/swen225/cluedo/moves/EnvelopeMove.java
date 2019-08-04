@@ -28,8 +28,7 @@ public class EnvelopeMove extends Move {
 
 	@Override
 	public boolean isValid(Board board) {
-		// TODO Auto-generated method stub
-		return false;
+		return true; // never moves any pieces so always valid
 	}
 
 	public String getCharacter() {
