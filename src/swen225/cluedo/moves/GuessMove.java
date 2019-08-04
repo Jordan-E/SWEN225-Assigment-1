@@ -6,6 +6,8 @@ import swen225.cluedo.pieces.*;
 
 /**
  * Move for placing pieces in room to make a guess
+ * 
+ * @author EllisJord
  */
 
 public class GuessMove extends Move{
@@ -29,8 +31,8 @@ public class GuessMove extends Move{
 
 	@Override
 	public boolean isValid(Board board) {
-		
-		return false;
+		//TODO
+		return true; // temp
 	}
 
 	public CharacterPiece getCharacter() {

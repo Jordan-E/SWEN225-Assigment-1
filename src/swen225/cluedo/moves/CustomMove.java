@@ -12,7 +12,7 @@ import swen225.cluedo.User;
 /**
  * Move where the user decides which cells to move through
  * 
- * @author elmes
+ * @author Ellisjord
  */
 
 public class CustomMove extends Move{
@@ -57,7 +57,7 @@ public class CustomMove extends Move{
 
 	
 	@Override
-	public boolean isValid(Board board) {
+	public boolean isValid(Board board) {		
 		for (int i = 0; i < steps.size(); i++) {
 			if (!canMove(steps.get(i))) {
 				return false;

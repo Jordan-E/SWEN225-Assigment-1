@@ -41,6 +41,6 @@ public class Envelope {
 		if (!weapon.represents(move.getWeapon())) return false;
 		if (!room.represents(move.getRoom())) return false;
 		
-		return true;
+		return false;
 	}
 }

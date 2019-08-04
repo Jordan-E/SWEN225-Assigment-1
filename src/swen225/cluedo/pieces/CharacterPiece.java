@@ -16,7 +16,7 @@ public class CharacterPiece extends Piece{
 		else if (name == "Mr Green") {col = 0; row = 14;}
 		else if (name == "Mrs Peacock") {col = 6; row = 23;}
 		else if (name == "Professor Plum") {col = 19; row = 23;}
-		else {throw new Error("Character Piece doesnt exsist");}
+		else {throw new Error("Character Piece doesn't exsist");}
 	}
 	
 	
