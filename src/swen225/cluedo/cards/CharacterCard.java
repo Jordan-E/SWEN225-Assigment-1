@@ -2,22 +2,29 @@ package swen225.cluedo.cards;
 
 /**
  * 
- * Class for each different character in the game
+ * Class for each different player in the game
  * 
- * @author elmes
+ * @author Ellisjord
  *
  */
 public class CharacterCard implements Card{
+	String description; 
 	
-	String name; 
+	public CharacterCard(String description) {
+		this.description = description;
+	}
 	
-	public CharacterCard(String name) {
-		this.name = name;
+	public String cardType() {
+		return "character";
+	}
+
+	public String returnItem() {
+		return description;
 	}
 	
 	@Override
 	public String toString() {
-		return name;
+		return description;
 	}
 	
 	/**
@@ -25,9 +32,9 @@ public class CharacterCard implements Card{
 	 * @param character
 	 * @return
 	 */
-	public boolean represents(Object name) {
-		if (name instanceof String) return this.name.equals((String) name);
-		return false;
+	public boolean represents(String character) {
+		//TODO
+		return true; //placeholder
 	}
 
 }

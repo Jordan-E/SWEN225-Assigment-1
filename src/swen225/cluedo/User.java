@@ -1,11 +1,7 @@
 package swen225.cluedo;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import swen225.cluedo.Board.Room;
 import swen225.cluedo.cards.Card;
 import swen225.cluedo.pieces.CharacterPiece;
 
@@ -28,18 +24,8 @@ public class User {
 		hand = new HashSet<Card>();
 	}
 	
-	public List<Card> hasCards(String character, String weapon, Room room) {
-		List<Card> cards = new ArrayList<>();
-		
-		for (Card c : hand) {
-			if (c.represents(character)) cards.add(c);
-		}
-		
-		return cards;
-	}
-	
 	/**
-	 * adds card to users hand
+	 * adds card to users hand / maybe do in constructor
 	 */
 	public void addCard(Card card) {hand.add(card);}
 	

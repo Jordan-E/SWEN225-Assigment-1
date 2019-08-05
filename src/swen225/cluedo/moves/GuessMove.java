@@ -6,8 +6,6 @@ import swen225.cluedo.pieces.*;
 
 /**
  * Move for placing pieces in room to make a guess
- * 
- * @author EllisJord
  */
 
 public class GuessMove extends Move{
@@ -31,8 +29,13 @@ public class GuessMove extends Move{
 
 	@Override
 	public boolean isValid(Board board) {
-		//TODO
-		return true; // temp
+		int col = character.getX();
+		int row = character.getY();
+		if(!board.getCell(row, col).isRoom()) { //must be in a room to make a guessMove
+			System.out.println("Must be in a room to make a guess");
+			return false;
+		} 
+		return true;
 	}
 
 	public CharacterPiece getCharacter() {
@@ -48,7 +51,7 @@ public class GuessMove extends Move{
 	}
 
 	@Override
-	public boolean apply() {
+	public boolean apply(Board board) {
 		// TODO Auto-generated method stub
 		return false;
 	}

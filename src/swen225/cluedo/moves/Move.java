@@ -19,8 +19,9 @@ public abstract class Move {
 	
 	/**
 	 * 
+	 * @param board 
 	 * @return whether it was successfully applied
 	 */
-	public abstract boolean apply();
+	public abstract boolean apply(Board board);
 
 }

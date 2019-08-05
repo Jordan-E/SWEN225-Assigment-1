@@ -1,5 +1,6 @@
 package swen225.cluedo.moves;
 
+import java.awt.PageAttributes.OriginType;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,18 +8,25 @@ import java.util.List;
 import java.util.Scanner;
 
 import swen225.cluedo.Board;
+import swen225.cluedo.Cell;
 import swen225.cluedo.User;
+import swen225.cluedo.pieces.CharacterPiece;
 
 /**
  * Move where the user decides which cells to move through
  * 
- * @author Ellisjord
+ * @author elmes
  */
 
 public class CustomMove extends Move{
 	
 	private int numSteps;
 	private List<Step> steps;
+	private CharacterPiece characterPiece;
+	private int stepCount = 0;
+	private List<Cell> visitedCells;
+	private int startRow;
+	private int startCol;
 	
 	private static List<Character> validDirections = Arrays.asList(new Character[] {'n','e','s','w'});
 	
@@ -26,6 +34,10 @@ public class CustomMove extends Move{
 		super(user);
 		this.numSteps = numSteps;
 		steps = processSteps(input);
+		characterPiece = user.getCharacterPiece();
+		visitedCells = new ArrayList<Cell>();
+		int startCol = characterPiece.getX();
+		int startRow = characterPiece.getY();
 	}
 
 	@Override
@@ -36,6 +48,7 @@ public class CustomMove extends Move{
 	
 	private List<Step> processSteps(String input) {
 		if (input == null) return null;
+		
 		
 		input.toLowerCase();
 		List<Step> steps = new ArrayList<>();
@@ -55,63 +68,67 @@ public class CustomMove extends Move{
 		return steps;
 	}
 
-	
+	/**
+	 * Loops through all the moves and checks if the move is valid
+	 */
 	@Override
-	public boolean isValid(Board board) {		
+	public boolean isValid(Board board) {
 		for (int i = 0; i < steps.size(); i++) {
-			if (!canMove(steps.get(i))) {
+			if (!canMove(steps.get(i), board)) {
 				return false;
 			}
 		}
-		
 		return true;
 	}
 	
-	private boolean canMove(Step steps) {
-//		if(finalX < 0 || finalX > board.length || finalY < 0 || finalY > board[0].length) {return false;} //move would take user off the board
-//		
-//		if(direction == Direction.SOUTH) {
-//			for (int i = yPosition; i < finalY; i++) {
-//				if(board[yPosition][xPosition].getCellType() == CellType.OUT_OF_BOUNDS) {return false;}
-//			}
-//		}
-//		else if(direction == Direction.NORTH){
-//			for (int i = yPosition; i > finalY; i--) {
-//				if(board[yPosition][xPosition].getCellType() == CellType.OUT_OF_BOUNDS) {return false;}
-//			}
-//		}
-//		else if(direction == Direction.EAST){
-//			for (int i = xPosition; i < finalX; i++) {
-//				if(board[yPosition][xPosition].getCellType() == CellType.OUT_OF_BOUNDS) {return false;}
-//			}
-//		}
-//		else if(direction == Direction.WEST){
-//			for (int i = xPosition; i > finalX; i--) {
-//				if(board[yPosition][xPosition].getCellType() == CellType.OUT_OF_BOUNDS) {return false;}
-//			}
-//		}
-		
-		return false;
-	}
-
-	/**
-	 * calculates the finishing position of the piece after completing the move
-	 */
-//	private void newPosition() {
-//		if(direction == Direction.SOUTH) {
-//			finalX = xPosition + numMoves; 
-//		}
-//		else if(direction == Direction.NORTH){
-//			finalX = xPosition - numMoves; 
-//		}
-//		else if(direction == Direction.EAST){
-//			finalY = xPosition + numMoves; 
-//		}
-//		else if(direction == Direction.WEST){
-//			finalY = xPosition - numMoves; 
-//		}				
-//	}
 	
+	
+	
+	/**
+	 * Steps through all the cells the playerPeice would have to move through and checks if they're valid
+	 * @param steps
+	 * @param board
+	 * @return
+	 */
+	private boolean canMove(Step steps, Board board) {
+		String direction = steps.getDir();
+		int count = steps.getCount();
+		stepCount += count;
+		int col = characterPiece.getX();
+		int row = characterPiece.getY();
+		Cell originCell = board.getCell(row, col);
+		
+		
+		if (stepCount > numSteps) { //not enough steps left to make the move.
+			return false;
+		}
+		
+		for (int i = 0; i < count; i++) {
+			if(board.getCellDirection(direction, row, col)==null) {return false;} //player has gone off the board
+			if(!(board.getCellDirection(direction, row, col).isHallway() || board.getCellDirection(direction, row, col).isDoorway())) {return false;}
+			
+			for(Cell cell: visitedCells) { //TODO fix me. Should stop playerPiece going on the same square twice
+				if(board.getCell(row, col)==cell) return false;
+			}
+			visitedCells.add(board.getCell(row, col));
+			
+		
+			if(direction == "N") {row -= 1;}
+			else if(direction == "S") {row += 1;}
+			else if(direction == "E") {col += 1;}
+			else if(direction == "W") {col -= 1;}
+			else {throw new Error("Invalid direction custom move apply");}
+
+		}
+		
+		if(board.getCell(row, col).isRoom()) {
+			//TODO discuss how we hold people in rooms
+		}
+		characterPiece.move(col, row);
+		originCell.setOccupied(false); //set starting cell to unoccupied
+		board.getCell(row, col).setOccupied(true); //set final cell to occupied
+		return true;
+	}
 
 
 	@Override
@@ -120,12 +137,18 @@ public class CustomMove extends Move{
 	}
 
 	@Override
-	public boolean apply() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean apply(Board board) {
+		int col = characterPiece.getX();
+		int row = characterPiece.getY();
+		System.out.println("Coll: " + 	col + "Row: " + row);
+		board.getCell(startRow, startCol).setOccupied(false);
+		board.getCell(row, col).setOccupied(true);
+		characterPiece.move(col, row);
+		return true;
 	}
 
 }
+
 
 class Step {
 	
@@ -143,8 +166,8 @@ class Step {
 		}
 	}	
 	
-	public Direction getDir() {
-		return dir;
+	public String getDir() {
+		return dir.name();
 	}
 
 	public int getCount() {
@@ -161,5 +184,6 @@ class Step {
 		else throw new InvalidParameterException();
 		
 		return dir;
+		
 	}
 }

@@ -20,32 +20,32 @@ public class Board {
 	
 	
 	private String[][] boardData = {
-		{"-","-","-","-","-","-","-","-","-"," ","-","-","-","-"," ","-","-","-","-","-","-","-","-","-"},//1
-		{"k","k","k","k","k","k","-"," "," "," ","b","b","b","b"," "," "," ","-","c","c","c","c","c","c"},//2
+		{"-","-","-","-","-","-","-","-","-"," ","-","-","-","-"," ","-","-","-","-","-","-","-","-","-"},//0
+		{"k","k","k","k","k","k","-"," "," "," ","b","b","b","b"," "," "," ","-","c","c","c","c","c","c"},//1
+		{"k","k","k","k","k","k"," "," ","b","b","b","b","b","b","b","b"," "," ","c","c","c","c","c","c"},//2
 		{"k","k","k","k","k","k"," "," ","b","b","b","b","b","b","b","b"," "," ","c","c","c","c","c","c"},//3
-		{"k","k","k","k","k","k"," "," ","b","b","b","b","b","b","b","b"," "," ","c","c","c","c","c","c"},//4
-		{"k","k","k","k","k","k"," "," ","b","b","b","b","b","b","b","b"," "," ","C","c","c","c","c","c"},//5
-		{"k","k","k","k","k","k"," "," ","B","b","b","b","b","b","b","B"," "," "," ","c","c","c","c","-"},//6
-		{"-","k","k","k","K","k"," "," ","b","b","b","b","b","b","b","b"," "," "," "," "," "," "," "," "},//7
-		{" "," "," "," "," "," "," "," ","b","B","b","b","b","b","B","b"," "," "," "," "," "," "," ","-"},//8
-		{"-"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","i","i","i","i","i","i"},//9
-		{"d","d","d","d","d"," "," "," "," "," "," "," "," "," "," "," "," "," ","I","i","i","i","i","i"},//10
+		{"k","k","k","k","k","k"," "," ","b","b","b","b","b","b","b","b"," "," ","C","c","c","c","c","c"},//4
+		{"k","k","k","k","k","k"," "," ","B","b","b","b","b","b","b","B"," "," "," ","c","c","c","c","-"},//5
+		{"-","k","k","k","K","k"," "," ","b","b","b","b","b","b","b","b"," "," "," "," "," "," "," "," "},//6
+		{" "," "," "," "," "," "," "," ","b","B","b","b","b","b","B","b"," "," "," "," "," "," "," ","-"},//7
+		{"-"," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","i","i","i","i","i","i"},//8
+		{"d","d","d","d","d"," "," "," "," "," "," "," "," "," "," "," "," "," ","I","i","i","i","i","i"},//9
+		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," ","i","i","i","i","i","i"},//10
 		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," ","i","i","i","i","i","i"},//11
-		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," ","i","i","i","i","i","i"},//12
-		{"d","d","d","d","d","d","d","D"," "," ","-","-","-","-","-"," "," "," ","i","i","i","i","I","i"},//13
-		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," "," "," "," "," "," ","-"},//14
-		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," ","l","l","l","l","l","-"},//15
-		{"d","d","d","d","d","d","D","d"," "," ","-","-","-","-","-"," "," ","l","l","l","l","l","l","l"},//16
-		{"-"," "," "," "," "," "," "," "," "," ","-","-","-","-","-"," "," ","L","l","l","l","l","l","l"},//17
-		{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","l","l","l","l","l","l","l"},//18
-		{"-"," "," "," "," "," "," "," "," ","h","h","H","H","h","h"," "," "," ","l","l","l","l","l","-"},//19
-		{"o","o","o","o","o","o","O"," "," ","h","h","h","h","h","h"," "," "," "," "," "," "," "," "," "},//20
-		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","H"," "," "," "," "," "," "," "," ","-"},//21
-		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","h"," "," ","S","s","s","s","s","s","s"},//22
+		{"d","d","d","d","d","d","d","D"," "," ","-","-","-","-","-"," "," "," ","i","i","i","i","I","i"},//12
+		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," "," "," "," "," "," ","-"},//13
+		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," ","l","l","l","l","l","-"},//14
+		{"d","d","d","d","d","d","D","d"," "," ","-","-","-","-","-"," "," ","l","l","l","l","l","l","l"},//15
+		{"-"," "," "," "," "," "," "," "," "," ","-","-","-","-","-"," "," ","L","l","l","l","l","l","l"},//16
+		{" "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," "," ","l","l","l","l","l","l","l"},//17
+		{"-"," "," "," "," "," "," "," "," ","h","h","H","H","h","h"," "," "," ","l","l","l","l","l","-"},//18
+		{"o","o","o","o","o","o","O"," "," ","h","h","h","h","h","h"," "," "," "," "," "," "," "," "," "},//19
+		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","H"," "," "," "," "," "," "," "," ","-"},//20
+		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","h"," "," ","S","s","s","s","s","s","s"},//21
+		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","h"," "," ","s","s","s","s","s","s","s"},//22
 		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","h"," "," ","s","s","s","s","s","s","s"},//23
-		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","h"," "," ","s","s","s","s","s","s","s"},//24
-		{"o","o","o","o","o","o","-"," ","-","h","h","h","h","h","h","-"," ","-","s","s","s","s","s","s"}//25
-	};  //1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  
+		{"o","o","o","o","o","o","-"," ","-","h","h","h","h","h","h","-"," ","-","s","s","s","s","s","s"}//24
+	};  //0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23    
 	
 	
 	public Board(int row, int col, List<CharacterPiece> characterPieces) {
@@ -68,15 +68,43 @@ public class Board {
 			}
 		}	
 		for (int i = 0; i < characterPieces.size(); i++) {
-			board[characterPieces.get(i).getX()][characterPieces.get(i).getY()].setOccupied(true);
+			board[characterPieces.get(i).getY()][characterPieces.get(i).getX()].setOccupied(true);
 		}
 	}
 	
-	
 	/**
-	 * move player
+	 * 
+	 * @param direction
+	 * @param row
+	 * @param col
+	 * @return The cell one in the direction of the direction entered, returns null if off the board
 	 */
-	public void move(int x, int y) {}
+	public Cell getCellDirection(String direction, int row, int col) { 
+		if (direction == "N") {
+			if(row-1 < 0) {return null;} //checks for going off the board
+			return board[row-1][col];			
+		}else if(direction == "S") {
+			if(row+1 > rows) {return null;}
+			return board[row+1][col];
+		}else if(direction == "W") {
+			if(col-1 < 0) {return null;}
+			return board[row][col-1];
+		}else if(direction == "E") {
+			if(col+1 > cols) {return null;}
+			return board[row][col+1];
+		}else {throw new Error("getCell incorrect input");}
+	}
+
+	/**
+	 * Get a cell in board
+	 * @param row
+	 * @param col
+	 * @return Cell
+	 */
+	public Cell getCell(int row, int col) {
+		if(row < 0 || row > cols || col < 0 || col > cols) {System.out.println("Row: " + row + " Col: " + col); return null; } 
+		return board[row][col];
+	}
 	
 	/**
 	 * print out the board as text into the output.
@@ -95,7 +123,13 @@ public class Board {
 		    	if (!board[i][j].isOccupied()) {
 		    		s += board[i][j];
 				}
-		    	else {s += "*";}
+		    	else {
+		    		for (CharacterPiece chara: characterPieces) { //get the number to display for the characterPiece
+						int col = chara.getX();
+						int row = chara.getY();
+						if(row == i && col == j) {s += chara.getIdentifyingNum(); break;}
+					}
+		    	}
 		        
 		    }
 		    s += "|\n";
@@ -114,19 +148,7 @@ public class Board {
 	public List<Room> possibleRooms(User user, int numMoves) {
 		return new ArrayList<>();
 	}
-	
-	/**
-	 * checks where a cell is clear for a player to move into
-	 * 
-	 * @return whether a player can move into this cell
-	 */
-	public boolean canMove(Cell cell) {
-		if (cell.isOccupied() /*|| cell.getCellType() == CellType.OUT_OF_BOUNDS)*/) {
-			return false;
-		}
-		return true;
-	}
-		
+			
 	
 	/**
 	 * When given a move. 
@@ -138,16 +160,22 @@ public class Board {
 	 */
 	public boolean execute(Move move) {
 		if (move.isValid(this)) {
-			move.apply();
+			move.apply(this);
 			return true;
 		}
-		else {return false;}
+		System.out.println("Invalid move (Board execute)");
+		return false;
 		
 	}
 	
+	/**
+	 * get game board
+	 * @return the game board containing cells
+	 */
 	public Cell[][] getBoard() {
 		return board;
 	}
+
 
 	public void setBoard(Cell[][] board) {
 		this.board = board;
@@ -160,10 +188,10 @@ public class Board {
 	 * @return null if not in room. Room if in room
 	 */
 	public Room inRoom(User user) {
-		int x = user.getCharacterPiece().getX();
-		int y = user.getCharacterPiece().getY();
-		if (board[x][y].isRoom()) {
-			Room room = board[x][y].getRoom();
+		int col = user.getCharacterPiece().getX();
+		int row = user.getCharacterPiece().getY();
+		if (board[row][col].isRoom()) {
+			Room room = board[row][col].getRoom();
 			return room;
 		}
 		return null;

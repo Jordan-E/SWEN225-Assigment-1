@@ -28,7 +28,8 @@ public class EnvelopeMove extends Move {
 
 	@Override
 	public boolean isValid(Board board) {
-		return true; // never moves any pieces so always valid
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public String getCharacter() {
@@ -43,8 +44,9 @@ public class EnvelopeMove extends Move {
 		return room;
 	}
 
+
 	@Override
-	public boolean apply() {
+	public boolean apply(Board board) {
 		// TODO Auto-generated method stub
 		return false;
 	}

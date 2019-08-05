@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import swen225.cluedo.cards.Card;
 import swen225.cluedo.cards.Deck;
 import swen225.cluedo.moves.CustomMove;
 import swen225.cluedo.moves.EnvelopeMove;
@@ -60,7 +59,7 @@ public class Cluedo {
 		}
 		
 		// distribute cards
-		Deck deck = new Deck(names, weapons);
+		Deck deck = new Deck(); //TODO make this take names, weapons and rooms
 		envelope = new Envelope(deck.getEnvelopeContents());
 		dealHands(deck);
 		
@@ -126,20 +125,16 @@ public class Cluedo {
 				else System.out.println(move.invalidMessage());
 			}
 			
-			// if still users turn (didn't guess envelope) check to see if they can guess
-			if (user.equals(turnOrder.currentUser())) {
-				Board.Room room = board.inRoom(user);
-				GuessMove guess = null;
-				if (room != null) guess = guessSelection(inputScanner, user);
-				if (guess != null) {
-					board.execute(guess); // move the pieces into the guessing room
-					processGuess(inputScanner, guess);
-				}
-				
-				turnOrder.endTurn(); //end turn
+			Board.Room room = board.inRoom(user);
+			GuessMove guess = null;
+			if (room != null) guess = guessSelection(inputScanner, user);
+			if (guess != null) {
+				board.execute(guess); // move the pieces into the guessing room
+				processGuess(guess);
 			}
 			
 			System.out.println("End of turn");
+			turnOrder.endTurn(); //end turn
 		}
 		
 		System.out.println("---- END OF GAME ----");
@@ -211,45 +206,14 @@ public class Cluedo {
 		return new GuessMove(user, character, weapon, room);
 	}
 	
-	private void processGuess(Scanner inputScanner, GuessMove guess) {
+	private void processGuess(GuessMove guess) {
 		System.out.println("Murderer - " + guess.getCharacter().toString() + "\tWeapon - " 
 				+ guess.getWeapon().toString() + "\tRoom - " + guess.getRoom());
+		System.out.println("#### NOT IMPLEMENTED YET ####");
 		
-		List<User> responseOrder = turnOrder.responseOrder(guess.getUser());
-		boolean disputed = false;
-		for (User user : responseOrder) {
-			if (disputed) continue;
-			
-			List<Card> cards = user.hasCards(guess.getCharacter().getName(), guess.getWeapon().getName(), guess.getRoom());
-			if (cards.size() > 0) {
-				disputed = true;
-				
-				Card show;
-				if (cards.size() > 1) {
-					show = cardChoiceDialogue(inputScanner, user, cards);
-				} else show = cards.get(0);
-				
-				System.out.println(user.getName() + " has the " + show.toString() + "card.");
-			}
-		}
-		if (!disputed) System.out.println("No one else has any of the cards you guessed.");
+		
 	}
 	
-	private Card cardChoiceDialogue(Scanner inputScanner, User user, List<Card> cards) {
-		int count = 1;
-		System.out.println("Which card would you like to show " + user.getName() + ".");
-		for (Card card : cards) {
-			System.out.println("\t(" + count++ + ") " + card);
-		}
-		
-		// get user input
-		List<String> validInput = new ArrayList<>();
-		for (Integer i = 1; i <= cards.size(); i++) {validInput.add(i.toString());}
-		Integer input = Integer.parseInt(getInput(inputScanner, validInput));
-		
-		return (cards.get(input - 1));
-	}
-
 	private CustomMove customMoveDialogue(Scanner inputScanner, User user, int numMoves) {
 		String input;
 		

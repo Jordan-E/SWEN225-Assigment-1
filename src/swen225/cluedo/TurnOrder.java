@@ -27,6 +27,7 @@ public class TurnOrder{
 	 * @return whether the user was removed successfully
 	 */
 	public boolean removeUser(User user) {
+		if (currentUser().equals(user)) endTurn();
 		if (!guessing.contains(user)) return false;
 		guessing.remove(user);
 		return true;
@@ -37,7 +38,6 @@ public class TurnOrder{
 	 */
 	public void removeAll() {
 		guessing.clear();
-		pointer = 0;
 	}
 	
 	/**
@@ -52,7 +52,6 @@ public class TurnOrder{
 	 * @return The user who's turn it is
 	 */
 	public User currentUser() {
-		if (guessing.isEmpty()) return null;
 		return guessing.get(pointer);
 	}
 	
