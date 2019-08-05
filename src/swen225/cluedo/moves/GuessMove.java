@@ -56,3 +56,4 @@ public class GuessMove extends Move{
 		return false;
 	}
 }
+

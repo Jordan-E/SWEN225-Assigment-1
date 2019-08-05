@@ -1,30 +1,22 @@
 package swen225.cluedo.cards;
 
 /**
- * Card for each weapon in cluedo
+ * Card for each weapon in Cluedo
  * 
- * @author Ellisjord
+ * @author elmes
  *
  */
 public class WeaponCard implements Card{
 
-	String description;
-	public WeaponCard(String description) {
-		this.description = description;
-	}
-
-	public String cardType() {
-		return "weapon";
-	}
-
-
-	public String returnItem() {
-		return description;
-	}
+	String name;
 	
+	public WeaponCard(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
-		return description;
+		return name;
 	}
 	
 	/**
@@ -32,8 +24,8 @@ public class WeaponCard implements Card{
 	 * @param weapon
 	 * @return
 	 */
-	public boolean represents(String weapon) {
-		//TODO
-		return true; //placeholder
+	public boolean represents(Object weapon) {
+		if (weapon instanceof String) return name.equals((String) weapon);
+		return false;
 	}
 }

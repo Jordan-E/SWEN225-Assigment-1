@@ -50,3 +50,4 @@ public class RoomMove extends Move{
 	}
 
 }
+
