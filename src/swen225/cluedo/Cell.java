@@ -52,10 +52,6 @@ public class Cell {
 		}
 	}
 	
-	public boolean isDoorway() {
-		return isDoorway;
-	}
-	
 	public boolean isRoom() {
 		return room != null;
 	}
@@ -63,6 +59,17 @@ public class Cell {
 	public CellType getCellType() {
 		return cellType;
 	}
+	
+	public boolean isDoorway() {
+		return isDoorway;
+	}
+
+	public boolean isHallway() {
+		if(cellType == CellType.HALLWAY) {return true;}
+		else {return false;}
+	}
+	
+	
 
 	public Room getRoom() {
 		return room;

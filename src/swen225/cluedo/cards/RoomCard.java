@@ -1,25 +1,31 @@
 package swen225.cluedo.cards;
 
 import swen225.cluedo.Board;
-import swen225.cluedo.Board.Room;
 
 /**
  * Card for each room in the game of cluedo
  * 
- * @author elmes
+ * @author Ellisjord
  *
  */
 public class RoomCard implements Card{
-	
-	Room room;
-	
-	public RoomCard(Room room) {
-		this.room = room;
+	String description;
+	public RoomCard(String description) {
+		this.description = description;
+	}
+
+	public String cardType() {
+		return "room";
+	}
+
+
+	public String returnItem() {
+		return description;
 	}
 
 	@Override
 	public String toString() {
-		return room.toString();
+		return description;
 	}
 	
 	/**
@@ -27,8 +33,8 @@ public class RoomCard implements Card{
 	 * @param room
 	 * @return
 	 */
-	public boolean represents(Object room) {
-		if (room instanceof Room) return this.room.equals((Room) room);
-		return false;
+	public boolean represents(Board.Room room) {
+		//TODO
+		return true; //placeholder
 	}
 }
