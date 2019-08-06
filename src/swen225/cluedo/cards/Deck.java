@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import swen225.cluedo.Board.Room;
-
 /**
  * 
  * Holds all the cards in the game of cluedo
@@ -18,12 +16,12 @@ public class Deck {
 	
 	ArrayList<Card> deck;
 	
-	public Deck(String[] names, String[] weapons) {
+	public Deck(String[] names, String[] weapons, String[] rooms) {
 		deck = new ArrayList<Card>();
 		
 		for (String name : names) {deck.add(new CharacterCard(name));}
 		for (String weapon : weapons) {deck.add(new WeaponCard(weapon));}
-		for (Room room : Room.values()) {deck.add(new RoomCard(room));}
+		for (String room : rooms) {deck.add(new RoomCard(room));}
 	}
 	
 	/**

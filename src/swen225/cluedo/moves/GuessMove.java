@@ -2,9 +2,10 @@ package swen225.cluedo.moves;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import swen225.cluedo.Board;
-import swen225.cluedo.Board.Room;
+import swen225.cluedo.Room;
 import swen225.cluedo.User;
 import swen225.cluedo.pieces.*;
 
@@ -43,16 +44,12 @@ public class GuessMove extends Move{ //teleport
 	}
 
 	@Override
-	public boolean apply(Board board) {
-		List<Piece> roomContains = board.getRoomContents().get(room);
-		//remove weapon from old room
-		for (Entry<Room, List<Piece>> piece : board.getRoomContents().entrySet()) {
-			if(piece.getValue().contains(weapon)) {
-				piece.getValue().remove(weapon);
-			}
-		}	
-		//add weapon to class
-		roomContains.add(weapon);
+	public boolean apply(Board board) {	
+		board.getRoom(weapon).removePiece(weapon); //remove weapon from old room
+		room.addPiece(weapon); //add weapon to new room
+		
+		board.getRoom(character).removePiece(character); //remove character piece from old room
+		room.addPiece(character); //add character piece to new room
 		
 		//take off isOccupied for original cell
 		int col = character.getX();

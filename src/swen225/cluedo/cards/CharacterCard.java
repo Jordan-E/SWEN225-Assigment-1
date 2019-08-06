@@ -25,9 +25,8 @@ public class CharacterCard implements Card{
 	 * @param character
 	 * @return
 	 */
-	public boolean represents(Object name) {
-		if (name instanceof String) return this.name.equals((String) name);
-		return false;
+	public boolean represents(String name) {
+		return this.name.equals(name);
 	}
 
 }

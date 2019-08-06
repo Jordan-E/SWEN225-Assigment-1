@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import swen225.cluedo.Board;
-import swen225.cluedo.Board.Room;
 import swen225.cluedo.Cell;
+import swen225.cluedo.Room;
 import swen225.cluedo.User;
 import swen225.cluedo.pieces.CharacterPiece;
 import swen225.cluedo.pieces.Piece;
@@ -184,14 +184,12 @@ public class CustomMove extends Move{
 		
 		if(board.getCell(startRow, startCol).isRoom()) { //removes player to a room. 
 			Room room = board.getCell(startRow, startCol).getRoom();
-			List<Piece> roomContains = board.getRoomContents().get(room);
-			roomContains.remove(characterPiece);
+			room.removePiece(characterPiece);
 		}
 		
 		if(board.getCell(row, col).isRoom()) { //adds player to a room. 
 			Room room = board.getCell(row, col).getRoom();
-			List<Piece> roomContains = board.getRoomContents().get(room);
-			roomContains.add(characterPiece);
+			room.addPiece(characterPiece);
 		}
 		
 		return true;

@@ -18,12 +18,9 @@ public class Board {
 	private Cell[][] board;
 	private int rows;
 	private int cols;
-	private List<CharacterPiece> characterPieces;
-	private List<WeaponPiece> weaponPieces;
-	private Map<Room, List<Piece>> roomContents = new HashMap<>();
-	
-	public enum Room {Kitchen, BallRoom, Conservatory, BilliardRoom, Library, Study, Hall, Lounge, DiningRoom}
-	
+	private List<CharacterPiece> characterPieces = new ArrayList<>();
+	private List<WeaponPiece> weaponPieces = new ArrayList<>();
+	private List<Room> rooms = new ArrayList<>();
 	
 	private String[][] boardData = {
 		{"-","-","-","-","-","-","-","-","-"," ","-","-","-","-"," ","-","-","-","-","-","-","-","-","-"},//0
@@ -54,17 +51,28 @@ public class Board {
 	};  //0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23    
 	
 	
-	public Board(int row, int col, List<CharacterPiece> characterPieces, List<WeaponPiece> weaponPieces) {
+	public Board(int row, int col, String[] characters, String[] weapons, String[] roomNames) {
 		board = new Cell[row][col]; //[25][24]
 		if (row != 25 || col != 24) System.out.println("Board dimensions not supported");	//need to add error otherwise game will continue
+		
+		// initialize character pieces
+		for (int i = 0; i < characters.length; i++) {
+			characterPieces.add(new swen225.cluedo.pieces.CharacterPiece(characters[i]));
+		}
+		
+		// initialize weapon pieces
+		for (int i = 0; i < weapons.length; i++) {
+			weaponPieces.add(new WeaponPiece(weapons[i]));
+		}
+		
+		// initialize rooms
+		for (int i = 0; i < roomNames.length; i++) {
+			rooms.add(new Room(roomNames[i]));
+		}
+		
 		this.rows = row;
 		this.cols = col;
-		this.characterPieces = characterPieces;
-		this.weaponPieces = weaponPieces;
 		loadBoard();
-		for (Room room : Room.values()) { 
-			roomContents.put(room, new ArrayList<Piece>());		   
-		}		
 	}
 	
 	
@@ -75,7 +83,7 @@ public class Board {
 	private void loadBoard() {
 		for (int i = 0; i < boardData.length; i++) {
 			for (int j = 0; j < boardData[i].length; j++) {
-				board[i][j] = new Cell(boardData[i][j]);
+				board[i][j] = new Cell(boardData[i][j], rooms);
 			}
 		}	
 		for (int i = 0; i < characterPieces.size(); i++) {
@@ -105,27 +113,6 @@ public class Board {
 			return board[row][col+1];
 		}else {throw new Error("getCell incorrect input");}
 	}
-
-	/**
-	 * get room conetents map
-	 * @return
-	 */
-	public Map<Room, List<Piece>> getRoomContents() {
-		return roomContents;
-	}
-
-
-
-	/**
-	 * set piece in roomconetents map
-	 * @param roomContents
-	 */
-	public void setRoomContents(Map<Room, List<Piece>> roomContents) {
-		this.roomContents = roomContents;
-	}
-
-
-
 
 	/**
 	 * Get a cell in board
@@ -219,14 +206,40 @@ public class Board {
 	 * @return null if not in room. Room if in room
 	 */
 	public Room inRoom(User user) {
-		int col = user.getCharacterPiece().getX();
-		int row = user.getCharacterPiece().getY();
+		return getRoom(user.getCharacterPiece());
+	}
+
+	/**
+	 * Get room piece is in
+	 * @param piece
+	 * @return
+	 */
+	public Room getRoom(Piece piece) {
+		int col = piece.getX();
+		int row = piece.getY();
 		if (board[row][col].isRoom()) {
 			Room room = board[row][col].getRoom();
 			return room;
 		}
 		return null;
 	}
-	
 
+
+	public List<CharacterPiece> getCharacterPieces() {
+		return characterPieces;
+	}
+
+
+
+	public List<WeaponPiece> getWeaponPieces() {
+		return weaponPieces;
+	}
+
+
+
+	public List<Room> getRooms() {
+		return rooms;
+	}
+	
+	
 }

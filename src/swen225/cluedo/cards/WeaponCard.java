@@ -24,8 +24,7 @@ public class WeaponCard implements Card{
 	 * @param weapon
 	 * @return
 	 */
-	public boolean represents(Object weapon) {
-		if (weapon instanceof String) return name.equals((String) weapon);
-		return false;
+	public boolean represents(String weapon) {
+		return name.equals(weapon);
 	}
 }

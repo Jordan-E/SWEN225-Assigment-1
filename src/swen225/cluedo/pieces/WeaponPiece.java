@@ -1,5 +1,7 @@
 package swen225.cluedo.pieces;
 
+import swen225.cluedo.Room;
+
 /**
  * 
  * @author Ellisjord
@@ -32,5 +34,4 @@ public class WeaponPiece extends Piece{
 		this.col = x;
 		return 0;
 	}
-
 }
