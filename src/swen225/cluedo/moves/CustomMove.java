@@ -65,11 +65,15 @@ public class CustomMove extends Move{
 	 */
 	@Override
 	public boolean isValid(Board board) {
-		Room startRoom = board.getCell(characterPiece.getY(), characterPiece.getX()).getRoom();
+		Room startRoom = board.getCell(characterPiece.getY(), characterPiece.getX()).getRoom();	
+		int startCol = characterPiece.getX();
+		int startRow = characterPiece.getY();
 		
-		boolean startInRoom;
+		
 		for (int i = 0; i < steps.size(); i++) {
 			if (!canMove(steps.get(i), board)) {
+				characterPiece.move(startCol, startRow); //puts character back in original position
+
 				return false;
 			}
 		}
@@ -77,12 +81,14 @@ public class CustomMove extends Move{
 		int col = characterPiece.getX();
 		int row = characterPiece.getY();
 		if(!(stepCount == numSteps) && (!board.getBoard()[row][col].isRoom())) { //checks all moves have been moved unless in a room
-			setInvalidMessage("Error: All steps not used");
+			setInvalidMessage("Error: All steps not used (Moves inside a room do not count) Steps moved: " + stepCount + "/" + numSteps);
+			
 			return false;
 		} 
 		Room endRoom = board.getCell(characterPiece.getY(), characterPiece.getX()).getRoom();
 		if(startRoom == endRoom && startRoom != null) {
 			setInvalidMessage("Error: Must leave room");
+			
 			return false;
 		}
 		return true;
@@ -104,55 +110,84 @@ public class CustomMove extends Move{
 		stepCount += count;
 		int col = characterPiece.getX();
 		int row = characterPiece.getY();
-		Cell originCell = board.getCell(row, col);
+		int lastRow = row;
+		int lastCol = col;
 		
+		//checks if user is entering the corner doors in the right direction
+		if(getCellDirection(direction, row, col, board).isDoorway()) { 
+			System.out.println(getCellDirection(direction, row, col, board).toString());
+			System.out.println(lastCol + ", "+ lastRow);
+			System.out.println(!(lastCol  == 17 && lastRow == 20));
+			if((getCellDirection(direction, row, col, board).toString() == "O")) {
+				if(!(lastCol  == 6 && lastRow == 18)) {
+					setInvalidMessage("Can't enter door from this direction");
+					return false;
+				}
+			}else if(board.getCell(row, col).toString() == "S") {
+				
+				if(!(lastCol  == 17 && lastRow == 20)) { //not working and i have no idea why
+					setInvalidMessage("Can't enter door from this direction"); 
+					return false;
+				}
+				
+			}
+			else if(board.getCell(row, col).toString() == "C") { //needs to be checked
+				if(!(lastCol  == 18 && lastRow == 5)) {
+					setInvalidMessage("Can't enter door from this direction"); 
+					return false;
+				}
+			}
+		}
 		
 		if (stepCount > numSteps) { //not enough steps left to make the move.
-			setInvalidMessage("Error: Not all moves used");
+			int movesOver = stepCount - numSteps;
+			setInvalidMessage("Error: Not all moves used. " + movesOver +  " step(s) to many");
 			return false;
 		}
 		
 		for (int i = 0; i < count; i++) {
-			if(board.getCellDirection(direction, row, col)==null) { //player has gone off the board
+			if(getCellDirection(direction, row, col, board)==null) { //player has gone off the board
 				setInvalidMessage("Error: Cannot move off the board");
 				return false;
 			}
 			
 			//checks that the next cell is a valid cell for a player to walk on
-			if(!(board.getCellDirection(direction, row, col).isHallway() || board.getCellDirection(direction, row, col).isRoom())) {
-				setInvalidMessage("Error: Tried to walk on invalid cell");
+			if(!(getCellDirection(direction, row, col, board).isHallway() || getCellDirection(direction, row, col, board).isRoom())) {
+				setInvalidMessage("Error: Tried to walk on invalid cell: " + getCellDirection(direction, row, col, board) + " At Row: "+  row + " Col: " + col);
 				return false;
 			}
-			if(board.getCellDirection(direction, row, col).isOccupied() && !board.getCell(row, col).isRoom()) { //check to stop going through other players
-				setInvalidMessage("Error: Player in the way");
+			if(getCellDirection(direction, row, col, board).isOccupied() && !board.getCell(row, col).isRoom()) { //check to stop going through other players
+				setInvalidMessage("Error: Player in the way" + " Row: " + row + " Col: " + col);
 				return false;
 			} 
 			
 			//checks that player piece doesn't go through room wall. (From hallway to room thats not doorway)
-			if(board.getCell(row, col).isHallway() && board.getCellDirection(direction, row, col).isRoom() && !board.getCellDirection(direction, row, col).isDoorway()) {
+			if(board.getCell(row, col).isHallway() && getCellDirection(direction, row, col, board).isRoom() && !getCellDirection(direction, row, col, board).isDoorway()) {
 				setInvalidMessage("Error: Player cant move through wall");
 				return false;
 			} 
 			//checks that player isn't leaving through a wall
-			if(board.getCell(row, col).isRoom() && !board.getCell(row, col).isDoorway() && board.getCellDirection(direction, row, col).isHallway()) {
+			if(board.getCell(row, col).isRoom() && !board.getCell(row, col).isDoorway() && getCellDirection(direction, row, col, board).isHallway()) {
 				setInvalidMessage("Error: Leave the room through the doorway");
 				return false;
 			}
 			
-			if(board.getCellDirection(direction, row, col).isRoom()) {stepCount--;} //moving in a room doesn't take up steps
+			
+			
+			if(getCellDirection(direction, row, col, board).isRoom()) {stepCount--;} //moving in a room doesn't take up steps
 			
 			BoardPosition currentPos = new BoardPosition(row, col);
 			for(BoardPosition cell: visitedCells) { //Stop playerPiece going on the same square twice
 				if(cell.equals(currentPos)) { 
 					setInvalidMessage("Error: Cannot revisit the same square in the same move");
 					return false;
-					
+										
 				}
 			}
 			visitedCells.add(currentPos);
 			
 			//keeps track if the piece is in the doorway
-			if(board.getCellDirection(direction, row, col).isDoorway()) {characterPiece.setInDoorway(true);}
+			if(getCellDirection(direction, row, col, board).isDoorway()) {characterPiece.setInDoorway(true);}
 			else {
 				characterPiece.setInDoorway(false);
 			}
@@ -169,15 +204,38 @@ public class CustomMove extends Move{
 		
 
 		characterPiece.move(col, row);
-		originCell.setOccupied(false); //set starting cell to unoccupied
-		board.getCell(row, col).setOccupied(true); //set final cell to occupied
+
 		return true;
+	}
+	
+	/**
+	 * gets cell one in direction selected
+	 * @param direction
+	 * @param row
+	 * @param col
+	 * @param board
+	 * @return
+	 */
+	public Cell getCellDirection(String direction, int row, int col, Board board) {
+		if (direction == "N") {
+			if(row-1 < 0) {return null;} //checks for going off the board
+			return board.getCell(row-1, col);			
+		}else if(direction == "S") {
+			if(row+1 > 25) {return null;}
+			return board.getCell(row+1, col);
+		}else if(direction == "W") {
+			if(col-1 < 0) {return null;}
+			return board.getCell(row, col-1);
+		}else if(direction == "E") {
+			if(col+1 > 24) {return null;}
+			return board.getCell(row, col+1);
+		}else {throw new Error("getCell incorrect input");}
 	}
 
 	@Override
 	public boolean apply(Board board) {
-		int col = characterPiece.getX();
-		int row = characterPiece.getY();
+		int col = characterPiece.getX();//set starting cell to unoccupied
+		int row = characterPiece.getY();//set final cell to occupied
 		board.getCell(startRow, startCol).setOccupied(false);
 		board.getCell(row, col).setOccupied(true);
 		characterPiece.move(col, row);

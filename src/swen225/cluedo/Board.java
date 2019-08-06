@@ -35,7 +35,7 @@ public class Board {
 		{"d","d","d","d","d"," "," "," "," "," "," "," "," "," "," "," "," "," ","I","i","i","i","i","i"},//9
 		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," ","i","i","i","i","i","i"},//10
 		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," ","i","i","i","i","i","i"},//11
-		{"d","d","d","d","d","d","d","D"," "," ","-","-","-","-","-"," "," "," ","i","i","i","i","I","i"},//12
+		{"d","d","d","d","d","d","d","D"," "," ","-","-","-","-","-"," "," "," ","i","i","i","i","I","i"},//12 Col
 		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," "," "," "," "," "," ","-"},//13
 		{"d","d","d","d","d","d","d","d"," "," ","-","-","-","-","-"," "," "," ","l","l","l","l","l","-"},//14
 		{"d","d","d","d","d","d","D","d"," "," ","-","-","-","-","-"," "," ","l","l","l","l","l","l","l"},//15
@@ -49,8 +49,8 @@ public class Board {
 		{"o","o","o","o","o","o","o"," "," ","h","h","h","h","h","h"," "," ","s","s","s","s","s","s","s"},//23
 		{"o","o","o","o","o","o","-"," ","-","h","h","h","h","h","h","-"," ","-","s","s","s","s","s","s"}//24
 	};  //0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23    
-	
-	
+												//Row
+						
 	public Board(int row, int col, String[] characters, String[] weapons, String[] roomNames) {
 		board = new Cell[row][col]; //[25][24]
 		if (row != 25 || col != 24) System.out.println("Board dimensions not supported");	//need to add error otherwise game will continue
@@ -91,28 +91,7 @@ public class Board {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param direction
-	 * @param row
-	 * @param col
-	 * @return The cell one in the direction of the direction entered, returns null if off the board
-	 */
-	public Cell getCellDirection(String direction, int row, int col) { 
-		if (direction == "N") {
-			if(row-1 < 0) {return null;} //checks for going off the board
-			return board[row-1][col];			
-		}else if(direction == "S") {
-			if(row+1 > rows) {return null;}
-			return board[row+1][col];
-		}else if(direction == "W") {
-			if(col-1 < 0) {return null;}
-			return board[row][col-1];
-		}else if(direction == "E") {
-			if(col+1 > cols) {return null;}
-			return board[row][col+1];
-		}else {throw new Error("getCell incorrect input");}
-	}
+
 
 	/**
 	 * Get a cell in board
@@ -121,7 +100,7 @@ public class Board {
 	 * @return Cell
 	 */
 	public Cell getCell(int row, int col) {
-		if(row < 0 || row > cols || col < 0 || col > cols) {System.out.println("Row: " + row + " Col: " + col); return null; } 
+		if(row < 0 || row > rows || col < 0 || col > cols) {System.out.println("Row: " + row + " Col: " + col); return null; } 
 		return board[row][col];
 	}
 	
@@ -156,17 +135,33 @@ public class Board {
 		s += "|";
 		for(int i=0; i < rows-1; i++) {s += "-";}
 		s += "|";
+		
+		
+//		s +="\n";
+//		for(int i = 0; i<rows; i++) {
+//			s += "|";
+//		    for(int j = 0; j<cols; j++) {
+//		    	
+//		    	boolean found = false;
+//		    	for (CharacterPiece chara: characterPieces) { //get the number to display for the characterPiece
+//					int col = chara.getX();
+//					int row = chara.getY();
+//					if(row == i && col == j) {s += chara.getIdentifyingNum(); found=true; break;}
+//				}
+//		    	if(found == false) {s += board[i][j];}
+//		        found = false;
+//		    }
+//		    s += "|\n";
+//		}
+//		s += "|";
+//		for(int i=0; i < rows-1; i++) {s += "-";}
+//		s += "|";
+		
+		
+		
 		return s;
 	}
 
-	/**
-	 * Calculates which rooms a user's piece can move into
-	 * 
-	 * @return list of rooms in range of user's piece
-	 */
-	public List<Room> possibleRooms(User user, int numMoves) {
-		return new ArrayList<>();
-	}
 			
 	
 	/**
@@ -179,9 +174,10 @@ public class Board {
 	 */
 	public boolean execute(Move move) {
 		if (move.isValid(this)) {
-			move.apply(this);
+			move.apply(this); //setting valid here bad
 			return true;
 		}
+
 		return false;
 		
 	}
