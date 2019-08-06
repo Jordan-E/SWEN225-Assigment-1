@@ -1,14 +1,9 @@
 package Tests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
 import swen225.cluedo.Envelope;
-import swen225.cluedo.cards.CharacterCard;
 import swen225.cluedo.cards.Deck;
-import swen225.cluedo.cards.RoomCard;
-import swen225.cluedo.cards.WeaponCard;
 
 class EnvelopeTests {
 
