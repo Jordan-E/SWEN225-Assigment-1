@@ -27,9 +27,6 @@ public class CustomMove extends Move{
 	private int startRow;
 	private int startCol;
 	
-
-	
-	
 	public CustomMove(User user, int numSteps, String input) {
 		super(user);
 		this.numSteps = numSteps;
@@ -37,9 +34,7 @@ public class CustomMove extends Move{
 		characterPiece = user.getCharacterPiece();
 		visitedCells = new ArrayList<BoardPosition>();
 		startCol = characterPiece.getX();
- 		startRow = characterPiece.getY();
- 		
-		
+ 		startRow = characterPiece.getY();	
 	}
 	
 	private List<Step> processSteps(String input) {
@@ -70,6 +65,9 @@ public class CustomMove extends Move{
 	 */
 	@Override
 	public boolean isValid(Board board) {
+		Room startRoom = board.getCell(characterPiece.getY(), characterPiece.getX()).getRoom();
+		
+		boolean startInRoom;
 		for (int i = 0; i < steps.size(); i++) {
 			if (!canMove(steps.get(i), board)) {
 				return false;
@@ -82,6 +80,11 @@ public class CustomMove extends Move{
 			setInvalidMessage("Error: All steps not used");
 			return false;
 		} 
+		Room endRoom = board.getCell(characterPiece.getY(), characterPiece.getX()).getRoom();
+		if(startRoom == endRoom && startRoom != null) {
+			setInvalidMessage("Error: Must leave room");
+			return false;
+		}
 		return true;
 	
 	}
@@ -150,7 +153,9 @@ public class CustomMove extends Move{
 			
 			//keeps track if the piece is in the doorway
 			if(board.getCellDirection(direction, row, col).isDoorway()) {characterPiece.setInDoorway(true);}
-			else {characterPiece.setInDoorway(false);}
+			else {
+				characterPiece.setInDoorway(false);
+			}
 			
 			
 		

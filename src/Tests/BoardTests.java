@@ -65,7 +65,8 @@ public class BoardTests {
 	/**
 	 * Check all character pieces start at the right location
 	 */
-	@Test public void checkInitialPlayerLocation() {
+	@Test 
+	public void checkInitialPlayerLocation() {
 		for (CharacterPiece p : characterPieces) {
 			int id = p.getIdentifyingNum();
 			if(id == 1) {

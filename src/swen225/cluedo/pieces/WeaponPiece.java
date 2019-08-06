@@ -7,6 +7,9 @@ package swen225.cluedo.pieces;
  */
 public class WeaponPiece extends Piece{
 
+	private int row;
+	private int col;
+
 	public WeaponPiece (String name) {
 		super(name);
 	}
@@ -25,7 +28,8 @@ public class WeaponPiece extends Piece{
 
 	@Override
 	public int move(int x, int y) {
-		// TODO Auto-generated method stub
+		this.row = y;
+		this.col = x;
 		return 0;
 	}
 
