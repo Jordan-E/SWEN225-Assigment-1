@@ -14,11 +14,9 @@ if the accusation is correct this player is the winner Y
 if the accusation is wrong this player keeps playing but cant win the game Y
 
 TODO:
-can resue cells.
 must use up all the moves unless in room.
 Enter the door in the right direction.
 Make leave room. 
-Set invalid message.
 junit
 
 
