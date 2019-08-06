@@ -1,12 +1,7 @@
 package swen225.cluedo.moves;
 
-import java.awt.PageAttributes.OriginType;
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import swen225.cluedo.Board;
@@ -53,15 +48,16 @@ public class CustomMove extends Move{
 		
 		input.toLowerCase();
 		List<Step> steps = new ArrayList<>();
-		Scanner sc = new Scanner(input).useDelimiter(",");
+		Scanner sc = new Scanner(input);
+		sc.useDelimiter(",");
 		
 		while (sc.hasNext()) {
 			try {
-				Step step = new Step(sc.next().trim()); //throws InvalidParameterException if not correct format
+				Step step = new Step(sc.next().trim()); //throws IllegalArgumentException if not correct format
 				steps.add(step);
-			} catch (InvalidParameterException e) {
+			} catch (IllegalArgumentException e) {
 				sc.close();
-				throw new InvalidParameterException();
+				throw new IllegalArgumentException();
 			}
 		}
 		
@@ -243,7 +239,7 @@ class Step {
 			dir = processDirection(input.substring(0,1));
 			count = Integer.parseInt(input.substring(1));
 		} catch (NumberFormatException e) {
-			throw new InvalidParameterException();
+			throw new IllegalArgumentException();
 		}
 	}	
 	
@@ -262,7 +258,7 @@ class Step {
 		else if (input.equalsIgnoreCase("e")) dir = Direction.E;
 		else if (input.equalsIgnoreCase("s")) dir = Direction.S;
 		else if (input.equalsIgnoreCase("w")) dir = Direction.W;
-		else throw new InvalidParameterException();
+		else throw new IllegalArgumentException();
 		
 		return dir;
 		

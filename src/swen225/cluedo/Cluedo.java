@@ -10,7 +10,6 @@ import swen225.cluedo.moves.CustomMove;
 import swen225.cluedo.moves.EnvelopeMove;
 import swen225.cluedo.moves.GuessMove;
 import swen225.cluedo.moves.Move;
-import swen225.cluedo.moves.RoomMove;
 import swen225.cluedo.pieces.CharacterPiece;
 import swen225.cluedo.pieces.Piece;
 import swen225.cluedo.pieces.WeaponPiece;
@@ -126,22 +125,14 @@ public class Cluedo {
 		
 		viewCardsDialogue(inputScanner, user);
 		
-		// tell user where they can move
+		// tell user what moves they can move
 		System.out.println("You may do the following moves: ");
-		
-		//TODO This is relies on possible rooms from board which hasn't been implemented
-//		List<Board.Room> rooms = board.possibleRooms(user, numMoves);
-//		int count = 1;
-//		for (Board.Room room : rooms) {
-//			System.out.println("\t(" + count++ + ") " + room);
-//		}
 		
 		System.out.println("\t(c) Custom movement");
 		System.out.println("\t(g) Guess the contents of the envelope");
 		
 		// get user input
 		List<String> validInput = new ArrayList<>();
-//		for (Integer i = 1; i <= rooms.size(); i++) {validInput.add(i.toString());} //possible rooms not implemented
 		validInput.add("c");
 		validInput.add("g");
 		String input = getInput(inputScanner, validInput);
@@ -153,10 +144,6 @@ public class Cluedo {
 			EnvelopeMove eMove = envelopeMoveDialogue(inputScanner, user);
 			move = eMove;
 			processEnvelopeGuess(user, eMove);
-		} else {
-			// chose a room to move to
-			//TODO This is relies on possible rooms from board which hasn't been implemented
-			//move = new RoomMove(user, rooms.get(Integer.parseInt(input)));
 		}
 		
 		return move;
