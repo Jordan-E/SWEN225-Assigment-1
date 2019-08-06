@@ -1,6 +1,5 @@
 package swen225.cluedo;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,23 +16,25 @@ import swen225.cluedo.pieces.Piece;
 import swen225.cluedo.pieces.WeaponPiece;
 
 /**
- * Class for running the Cluedo game. 
+ * Class for input/output of Cluedo and high level logic 
  * 
  * @author elmes
  */
 public class Cluedo {
 	private TurnOrder turnOrder = new TurnOrder();
-	Envelope envelope;
+	private Envelope envelope;
 	private Board board;
-	
-	private static final String[] names = {"Miss Scarlett", "Colonel Mustard", "Mrs White", "Mr Green", "Mrs Peacock", "Professor Plum"};
-	private static final String[] weapons = {"Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"};
-	
 	private List<CharacterPiece> characterPieces = new ArrayList<>();
 	private List<WeaponPiece> weaponPieces = new ArrayList<>();
 	
+	// default values
+	private static final String[] names = {"Miss Scarlett", "Colonel Mustard", "Mrs White", "Mr Green", "Mrs Peacock", "Professor Plum"};
+	private static final String[] weapons = {"Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"};
+	
+	
 	/**
 	 * Constructor
+	 * Initializes board, character pieces, weapon pieces, users and turn order
 	 * @param playerCount
 	 */
 	public Cluedo() {
@@ -46,12 +47,12 @@ public class Cluedo {
 			characterPieces.add(new swen225.cluedo.pieces.CharacterPiece(names[i]));
 		}
 		
-		board = new Board(25,24, characterPieces);
-		
 		// initialize weapon pieces
 		for (int i = 0; i < weapons.length; i++) {
 			weaponPieces.add(new WeaponPiece(weapons[i]));
 		}
+		
+		board = new Board(25,24, characterPieces, weaponPieces);
 		
 		// initialize users and their position in queue
 		for (int i = 0; i < playerCount; i++) {
@@ -67,10 +68,109 @@ public class Cluedo {
 		play(inputScanner);
 	}
 	
-	public List<CharacterPiece> getCharacterPieces() {
-		return characterPieces;
+	/**
+	 * Play the game. This is were the high level logic is stored.
+	 * 
+	 * Asks player what move they would like to make
+	 * Passes move to board to execute
+	 * If they move into a room they can make a guess in that room
+	 * Repeats in order until no players are left or someone wins
+	 */
+	private void play(Scanner inputScanner) {
+		while (turnOrder.playersLeft()) {
+			User user = turnOrder.currentUser(); // User who's turn it is
+			int moves = rollDice(); // roll dice
+			
+			System.out.println("\n" + board.toString());
+			System.out.println("\nIt is " + user.getName() + "'s (" + user.getCharacterPiece().getIdentifyingNum()+ ") turn.");
+			System.out.println("You roll a "+moves);
+			
+			boolean validMove = false;
+			while (!validMove) {
+				Move move = moveSelection(inputScanner, user, moves);
+				if(board.execute(move)) validMove = true;
+				else System.out.println(move.getInvalidMessage());
+			}
+			
+			// if still users turn (didn't guess envelope) check to see if they can guess
+			if (user.equals(turnOrder.currentUser())) {
+				Board.Room room = board.inRoom(user);
+				GuessMove guess = null;
+				if (room != null && yesNoQuestion(inputScanner, "Would you like to make guess?")) {
+					guess = guessSelection(inputScanner, user);
+				}
+				if (guess != null) {
+					board.execute(guess); // move the pieces into the guessing room
+					processGuess(inputScanner, guess);
+				}
+				
+				turnOrder.endTurn(); //end turn
+			}
+			
+			System.out.println("--------------- End of turn ---------------");
+		}
+		
+		System.out.println("/n==================== END OF GAME ====================");
 	}
 
+	/**
+	 * IO for moves of turn
+	 * User can either move on the board or guess the contents of the envelope
+	 * 
+	 * @param user
+	 * @param numMoves
+	 * @return the move the user wants to perform
+	 */
+	private Move moveSelection(Scanner inputScanner, User user, int numMoves) {
+		Move move = null;
+		
+		viewCardsDialogue(inputScanner, user);
+		
+		// tell user where they can move
+		System.out.println("You may do the following moves: ");
+		
+		//TODO This is relies on possible rooms from board which hasn't been implemented
+//		List<Board.Room> rooms = board.possibleRooms(user, numMoves);
+//		int count = 1;
+//		for (Board.Room room : rooms) {
+//			System.out.println("\t(" + count++ + ") " + room);
+//		}
+		
+		System.out.println("\t(c) Custom movement");
+		System.out.println("\t(g) Guess the contents of the envelope");
+		
+		// get user input
+		List<String> validInput = new ArrayList<>();
+//		for (Integer i = 1; i <= rooms.size(); i++) {validInput.add(i.toString());} //possible rooms not implemented
+		validInput.add("c");
+		validInput.add("g");
+		String input = getInput(inputScanner, validInput);
+		
+		// construct move
+		if (input.equals("c")) {
+			move = customMoveDialogue(inputScanner, user, numMoves);
+		} else if (input.equals("g")) {
+			EnvelopeMove eMove = envelopeMoveDialogue(inputScanner, user);
+			move = eMove;
+			processEnvelopeGuess(user, eMove);
+		} else {
+			// chose a room to move to
+			//TODO This is relies on possible rooms from board which hasn't been implemented
+			//move = new RoomMove(user, rooms.get(Integer.parseInt(input)));
+		}
+		
+		return move;
+	}
+	
+	// ----- HELPERS -----//
+	
+	/**
+	 * Asks the user how many people are playing
+	 * Checks the input is valid
+	 * 
+	 * @param input Scanner for getting user input
+	 * @return number of people playing
+	 */
 	private Integer getPlayerCount(Scanner input) {
 		System.out.println("How many people are playing? (3 to 6)");
 		Integer playerCount = 0;
@@ -108,103 +208,55 @@ public class Cluedo {
 	}
 	
 	/**
-	 * Play the game. This is were the high level logic should be
+	 * Asks the user if they would like to see their cards
+	 * If they do displays them
+	 * 
+	 * @param inputScanner
+	 * @param user
 	 */
-	private void play(Scanner inputScanner) {
-		while (turnOrder.playersLeft()) {
-			User user = turnOrder.currentUser(); // User who's turn it is
-			int moves = rollDice(); // roll dice
-			
-			System.out.println("\n" + board.toString());
-			System.out.println("\nIt is " + user.getName() + "'s turn.");
-			System.out.println("You roll a "+moves);
-			
-			boolean validMove = false;
-			while (!validMove) {
-				Move move = moveSelection(inputScanner, user, moves);
-				if(board.execute(move)) validMove = true;
-				else System.out.println(move.invalidMessage());
-			}
-			
-			// if still users turn (didn't guess envelope) check to see if they can guess
-			if (user.equals(turnOrder.currentUser())) {
-				Board.Room room = board.inRoom(user);
-				GuessMove guess = null;
-				if (room != null) guess = guessSelection(inputScanner, user);
-				if (guess != null) {
-					board.execute(guess); // move the pieces into the guessing room
-					processGuess(inputScanner, guess);
-				}
-				
-				turnOrder.endTurn(); //end turn
-			}
-			
-			System.out.println("End of turn");
+	private void viewCardsDialogue(Scanner inputScanner, User user) {
+		if (yesNoQuestion(inputScanner, "Would you like to see the cards in your hand?")) {
+			System.out.println(user.getHand());
 		}
+	}	
+	
+	
+	/**
+	 * Prints the guess
+	 * If they guess correctly updates turnOrder to reflect no turns left in game
+	 * If they guess incorrectly updates turnOrder so that they can only disprove guesses
+	 * 
+	 * @param user
+	 * @param eMove
+	 */
+	private void processEnvelopeGuess(User user, EnvelopeMove eMove) {
+		System.out.println(user.getName() + " guessed that " + eMove.getCharacter() + " is the murderer, " + 
+				eMove.getWeapon() + " is the murder weapon, and " + eMove.getRoom() + " is the location.");
 		
-		System.out.println("---- END OF GAME ----");
+		if (envelope.processGuess(eMove)) {
+			// end game. They guessed correctly
+			System.out.println(eMove.getUser().getName() + " guessed the contents of the envelope correctly.");
+			System.out.println("The murderer was " + eMove.getCharacter() + " with a " + eMove.getWeapon() + " in the " + eMove.getRoom() + ".");
+			turnOrder.removeAll();
+		} else {
+			// Incorrect guess. Remove this player from the game (can still be called on for disproving guesses)
+			System.out.println(eMove.getUser().getName() + " guessed the contents of the envelope incorrectly.");
+			turnOrder.removeUser(user);
+		}
 	}
 	
 	/**
-	 * IO for moves of turn
-	 * Tells user where/how they can move
+	 * Generates a GuessMove by asking the user what they want to guess
+	 * (not for envelope guesses)
 	 * 
+	 * @param inputScanner
 	 * @param user
-	 * @param numMoves
-	 * @return the move the user wants to perform
+	 * @return
 	 */
-	private Move moveSelection(Scanner inputScanner, User user, int numMoves) {
-		Move move = null;
-		
-		List<Board.Room> rooms = board.possibleRooms(user, numMoves);
-		int count = 1;
-		
-		// tell user where they can move
-		System.out.println("You may move to: ");
-		for (Board.Room room : rooms) {
-			System.out.println("\t(" + count++ + ") " + room);
-		}
-		System.out.println("\t(c) Custom movement");
-		System.out.println("\t(g) Guess the contents of the envelope");
-		
-		// get user input
-		List<String> validInput = new ArrayList<>();
-		for (Integer i = 1; i <= rooms.size(); i++) {validInput.add(i.toString());}
-		validInput.add("c");
-		validInput.add("g");
-		String input = getInput(inputScanner, validInput);
-		
-		// construct move
-		if (input.equals("c")) {
-			move = customMoveDialogue(inputScanner, user, numMoves);
-		} else if (input.equals("g")) {
-			EnvelopeMove eMove = envelopeMoveDialogue(inputScanner, user);
-			move = eMove;
-			
-			System.out.println(user.getName() + " guessed that " + eMove.getCharacter() + " is the murderer, " + 
-					eMove.getWeapon() + " is the murder weapon, and " + eMove.getRoom() + " is the location.");
-			if (envelope.processGuess(eMove)) {
-				// end game. They guessed correctly
-				System.out.println(move.getUser().getName() + " guessed the contents of the envelope correctly.");
-				System.out.println("The murderer was " + eMove.getCharacter() + " with a " + eMove.getWeapon() + " in the " + eMove.getRoom() + ".");
-				turnOrder.removeAll();
-			} else {
-				// Incorrect guess. Remove this player from the game (can still be called on for disproving guesses)
-				System.out.println(move.getUser().getName() + " guessed the contents of the envelope incorrectly.");
-				turnOrder.removeUser(user);
-			}
-		} else {
-			// chose a room to move to
-			move = new RoomMove(user, rooms.get(Integer.parseInt(input)));
-		}
-		
-		return move;
-	}
-	
 	private GuessMove guessSelection (Scanner inputScanner, User user) {
 		assert board.inRoom(user) != null;
 		
-		System.out.println(user + " has an opportunity to guess in " + board.inRoom(user));
+		System.out.println(user.getName() + " has an opportunity to guess in " + board.inRoom(user));
 		CharacterPiece character = chooseCharacter(inputScanner);
 		WeaponPiece weapon = chooseWeapon(inputScanner);
 		Board.Room room = board.inRoom(user);
@@ -212,6 +264,17 @@ public class Cluedo {
 		return new GuessMove(user, character, weapon, room);
 	}
 	
+	/**
+	 * Goes round the users in order checking if they have a card to disprove the guess
+	 * 
+	 * If a user has only one card that can disprove the guess it shows the guesser that card.
+	 * If a user has multiple cards that can disprove a guess it allows them to choose which card
+	 * they show and then shows that card to the guesser.
+	 * 
+	 * 
+	 * @param inputScanner
+	 * @param guess
+	 */
 	private void processGuess(Scanner inputScanner, GuessMove guess) {
 		System.out.println("Murderer - " + guess.getCharacter().toString() + "\tWeapon - " 
 				+ guess.getWeapon().toString() + "\tRoom - " + guess.getRoom());
@@ -230,12 +293,21 @@ public class Cluedo {
 					show = cardChoiceDialogue(inputScanner, user, cards);
 				} else show = cards.get(0);
 				
-				System.out.println(user.getName() + " has the " + show.toString() + "card.");
+				System.out.println(user.getName() + " has the " + show.toString() + " card.");
 			}
 		}
 		if (!disputed) System.out.println("No one else has any of the cards you guessed.");
 	}
 	
+	/**
+	 * This allows a user to show which card they reveal to a guesser if they have
+	 * multiple cards that would disprove the guess
+	 * 
+	 * @param inputScanner
+	 * @param user
+	 * @param cards
+	 * @return
+	 */
 	private Card cardChoiceDialogue(Scanner inputScanner, User user, List<Card> cards) {
 		int count = 1;
 		System.out.println("Which card would you like to show " + user.getName() + ".");
@@ -251,6 +323,16 @@ public class Cluedo {
 		return (cards.get(input - 1));
 	}
 
+	
+	/**
+	 * Input/output for creating a custom move
+	 * Checks that the syntax is correct but not if the move is valid
+	 * 
+	 * @param inputScanner
+	 * @param user
+	 * @param numMoves
+	 * @return
+	 */
 	private CustomMove customMoveDialogue(Scanner inputScanner, User user, int numMoves) {
 		String input;
 		
@@ -261,12 +343,19 @@ public class Cluedo {
 			input = inputScanner.nextLine();
 			try {
 				return new CustomMove(user, numMoves, input);
-			} catch (InvalidParameterException e) {
+			} catch (IllegalArgumentException e) {
 				//repeat
 			}
 		}
 	}
 	
+	/**
+	 * Input/output for the envelope guess
+	 * 
+	 * @param inputScanner
+	 * @param user
+	 * @return the move that is created as a result of the user input
+	 */
 	private EnvelopeMove envelopeMoveDialogue(Scanner inputScanner, User user) {
 		System.out.println(user.getName() + " is guessing the contents of the envelope.");
 		String character = chooseCharacter(inputScanner).getName();
@@ -276,6 +365,14 @@ public class Cluedo {
 		return new EnvelopeMove(user, character, weapon, room);
 	}
 	
+	/**
+	 * Input/output for picking a piece from a list of pieces
+	 * 
+	 * @param inputScanner
+	 * @param message
+	 * @param pieces
+	 * @return selected piece
+	 */
 	private Piece choosePiece(Scanner inputScanner, String message, List<? extends Piece> pieces) {
 		System.out.println(message);
 		int count = 1;
@@ -293,14 +390,34 @@ public class Cluedo {
 		return pieces.get(Integer.parseInt(input) - 1);
 	}
 	
+	/**
+	 * Input/Output for picking a CharacterPiece from all the character pieces
+	 * 
+	 * @param inputScanner
+	 * @return selected CharacterPiece
+	 */
 	private CharacterPiece chooseCharacter(Scanner inputScanner) {
 		return (CharacterPiece) choosePiece(inputScanner, "Who do you think the murderer was?", characterPieces);
 	}
 	
+	
+	/**
+	 * Input/Output for picking a WeaponPiece from all the weapon pieces
+	 * 
+	 * @param inputScanner
+	 * @return selected WeaponPiece
+	 */
 	private WeaponPiece chooseWeapon(Scanner inputScanner) {
 		return (WeaponPiece) choosePiece(inputScanner, "What do you think the murder weapon was?", weaponPieces);
 	}
 	
+	
+	/**
+	 * Input/output for picking a room from the enum of rooms in board
+	 * 
+	 * @param inputScanner
+	 * @return selected room
+	 */
 	private Board.Room chooseRoom(Scanner inputScanner) {
 		System.out.println("Which room do you think the murder took place in?");
 		
@@ -354,7 +471,30 @@ public class Cluedo {
 		return input;
 	}
 	
+	/**
+	 * Asks the user the given yes/no question and returns answer
+	 * 
+	 * @param inputScanner
+	 * @param question
+	 * @return true for yes, false for no
+	 */
+	private boolean yesNoQuestion(Scanner inputScanner, String question) {
+		System.out.println(question);
+		
+		List<String> validInput = new ArrayList<>();
+		validInput.add("y"); validInput.add("n");
+		String input = getInput(inputScanner, validInput);
+		
+		return input.equalsIgnoreCase("y");
+	}
 	
+	
+	
+	
+	/**
+	 * New Cluedo instance
+	 * @param args
+	 */
 	public static void main(String[] args) {	
 		new Cluedo();
 	}

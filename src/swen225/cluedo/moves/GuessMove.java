@@ -1,6 +1,10 @@
 package swen225.cluedo.moves;
 
+import java.util.List;
+import java.util.Map.Entry;
+
 import swen225.cluedo.Board;
+import swen225.cluedo.Board.Room;
 import swen225.cluedo.User;
 import swen225.cluedo.pieces.*;
 
@@ -8,13 +12,13 @@ import swen225.cluedo.pieces.*;
  * Move for placing pieces in room to make a guess
  */
 
-public class GuessMove extends Move{
+public class GuessMove extends Move{ //teleport
 
 	private final CharacterPiece character;
 	private final WeaponPiece weapon;
-	private final Board.Room room;
+	private final Room room;
 	
-	public GuessMove(User user, CharacterPiece character, WeaponPiece weapon, Board.Room room) {
+	public GuessMove(User user, CharacterPiece character, WeaponPiece weapon, Room room) {
 		super(user);
 		this.character = character;
 		this.weapon = weapon;
@@ -22,19 +26,7 @@ public class GuessMove extends Move{
 	}
 
 	@Override
-	public String invalidMessage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean isValid(Board board) {
-		int col = character.getX();
-		int row = character.getY();
-		if(!board.getCell(row, col).isRoom()) { //must be in a room to make a guessMove
-			System.out.println("Must be in a room to make a guess");
-			return false;
-		} 
 		return true;
 	}
 
@@ -46,14 +38,37 @@ public class GuessMove extends Move{
 		return weapon;
 	}
 	
-	public Board.Room getRoom() {
+	public Room getRoom() {
 		return room;
 	}
 
 	@Override
 	public boolean apply(Board board) {
-		// TODO Auto-generated method stub
-		return false;
+		List<Piece> roomContains = board.getRoomContents().get(room.name());
+		//remove weapon from old room
+		for (Entry<Room, List<Piece>> piece : board.getRoomContents().entrySet()) {
+			if(piece.getValue().contains(weapon)) {
+				piece.getValue().remove(weapon);
+			}
+		}	
+		//add weapon to class
+		roomContains.add(weapon);
+		
+		//take off isOccupied for original cell
+		int col = character.getX();
+		int row = character.getY();
+		board.getCell(row, col).setOccupied(false);
+		
+		for (int i = 0; i < board.getBoard().length; i++) {
+			for (int j = 0; j < board.getBoard()[0].length; j++) {
+				if(board.getCell(i, j).getRoom() == room) {
+					board.getCell(i, j).setOccupied(true);
+					character.move(j, i);
+					return true;
+				}
+			}
+		}
+		return true;
 	}
 }
 

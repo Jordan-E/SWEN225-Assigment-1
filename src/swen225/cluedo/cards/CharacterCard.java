@@ -2,7 +2,7 @@ package swen225.cluedo.cards;
 
 /**
  * 
- * Class for each different character in the game
+ * Class for character card in the game
  * 
  * @author elmes
  *

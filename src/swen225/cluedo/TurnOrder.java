@@ -17,6 +17,10 @@ public class TurnOrder{
 	
 	public TurnOrder() {}
 	
+	/**
+	 * Add guessing user
+	 * @param user
+	 */
 	public void addUser(User user) {
 		guessing.add(user);
 		order.add(user);
@@ -28,12 +32,13 @@ public class TurnOrder{
 	 */
 	public boolean removeUser(User user) {
 		if (!guessing.contains(user)) return false;
+		if (pointer == guessing.size()-1) pointer = 0;
 		guessing.remove(user);
 		return true;
 	}
 	
 	/**
-	 * 
+	 * Removes all guessing players (Game over)
 	 */
 	public void removeAll() {
 		guessing.clear();

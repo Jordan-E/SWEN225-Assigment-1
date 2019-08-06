@@ -5,7 +5,8 @@ import swen225.cluedo.User;
 
 public abstract class Move {
 	
-	protected User user;
+	private User user;
+	private String invalidMessage = "";
 	
 	public Move (User user) {
 		this.user = user;
@@ -13,13 +14,15 @@ public abstract class Move {
 	
 	public User getUser() {return user;}
 	
-	public abstract String invalidMessage();
+	public String getInvalidMessage() {return invalidMessage;}
+	
+	public void setInvalidMessage(String s) {invalidMessage = s;}
 
 	public abstract boolean isValid(Board board);
 	
 	/**
 	 * 
-	 * @return whether it was successfully applied
+	 * @return whether move was successfully applied
 	 */
 	public abstract boolean apply(Board board);
 

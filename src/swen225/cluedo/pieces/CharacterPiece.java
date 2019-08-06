@@ -6,9 +6,12 @@ package swen225.cluedo.pieces;
  *
  */
 public class CharacterPiece extends Piece{
+	
 	private int col;
 	private int row;
 	private final int identifyingNum;
+	private boolean inDoorway = false;
+	
 	public CharacterPiece(String name) {
 		super(name);
 		if(name == "Miss Scarlett") {col = 7; row = 24; identifyingNum = 1;}
@@ -20,13 +23,9 @@ public class CharacterPiece extends Piece{
 		else {throw new Error("Character Piece doesnt exsist");}
 	}
 	
-	
-	
 	public int getIdentifyingNum() {
 		return identifyingNum;
 	}
-
-
 
 	@Override
 	public int getX() {
@@ -44,5 +43,12 @@ public class CharacterPiece extends Piece{
 		this.col = x;
 		return 0;
 	}
+
+	public void setInDoorway(boolean inDoorway) {
+		this.inDoorway = inDoorway;
+	}
 	
+	public boolean isInDoorway() {
+		return inDoorway;
+	}
 }

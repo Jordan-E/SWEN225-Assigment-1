@@ -1,10 +1,9 @@
 package swen225.cluedo.cards;
 
-import swen225.cluedo.Board;
 import swen225.cluedo.Board.Room;
 
 /**
- * Card for each room in the game of cluedo
+ * Class for Room card
  * 
  * @author elmes
  *

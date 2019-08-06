@@ -1,10 +1,14 @@
 package swen225.cluedo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import swen225.cluedo.moves.Move;
 import swen225.cluedo.pieces.CharacterPiece;
+import swen225.cluedo.pieces.Piece;
+import swen225.cluedo.pieces.WeaponPiece;
 
 /**
  * 
@@ -15,6 +19,8 @@ public class Board {
 	private int rows;
 	private int cols;
 	private List<CharacterPiece> characterPieces;
+	private List<WeaponPiece> weaponPieces;
+	private Map<Room, List<Piece>> roomContents = new HashMap<>();
 	
 	public enum Room {Kitchen, BallRoom, Conservatory, BilliardRoom, Library, Study, Hall, Lounge, DiningRoom}
 	
@@ -48,14 +54,19 @@ public class Board {
 	};  //0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20  21  22  23    
 	
 	
-	public Board(int row, int col, List<CharacterPiece> characterPieces) {
+	public Board(int row, int col, List<CharacterPiece> characterPieces, List<WeaponPiece> weaponPieces) {
 		board = new Cell[row][col]; //[25][24]
 		if (row != 25 || col != 24) System.out.println("Board dimensions not supported");	//need to add error otherwise game will continue
 		this.rows = row;
 		this.cols = col;
 		this.characterPieces = characterPieces;
+		this.weaponPieces = weaponPieces;
 		loadBoard();
+		for (Room room : Room.values()) { 
+			roomContents.put(room, new ArrayList<Piece>());		   
+		}		
 	}
+	
 	
 	
 	/**
@@ -94,6 +105,27 @@ public class Board {
 			return board[row][col+1];
 		}else {throw new Error("getCell incorrect input");}
 	}
+
+	/**
+	 * get room conetents map
+	 * @return
+	 */
+	public Map<Room, List<Piece>> getRoomContents() {
+		return roomContents;
+	}
+
+
+
+	/**
+	 * set piece in roomconetents map
+	 * @param roomContents
+	 */
+	public void setRoomContents(Map<Room, List<Piece>> roomContents) {
+		this.roomContents = roomContents;
+	}
+
+
+
 
 	/**
 	 * Get a cell in board

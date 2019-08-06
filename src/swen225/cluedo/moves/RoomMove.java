@@ -6,6 +6,7 @@ import swen225.cluedo.pieces.CharacterPiece;
 
 /**
  * Move to "teleport" into a room that is within range
+ * TODO Not implemented
  */
 
 public class RoomMove extends Move{
@@ -17,12 +18,6 @@ public class RoomMove extends Move{
 		super(user);
 		this.character = user.getCharacterPiece(); 
 		this.room = room;
-	}
-	
-	@Override
-	public String invalidMessage() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

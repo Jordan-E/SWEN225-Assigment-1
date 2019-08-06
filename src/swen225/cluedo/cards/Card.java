@@ -2,7 +2,7 @@ package swen225.cluedo.cards;
 
 /**
  * 
- * Interface holding all the different found cards in cluedo
+ * Interface for all the different cards in Cluedo
  * 
  * @author elmes
  *

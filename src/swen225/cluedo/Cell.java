@@ -13,16 +13,12 @@ public class Cell {
 	private boolean isDoorway = false;
 	private boolean isOccupied = false;
 	
-	public boolean isOccupied() {
-		return isOccupied;
-	}
-
-	public void setOccupied(boolean isOccupied) {
-		this.isOccupied = isOccupied;
-	}
-
 	private enum CellType {ROOM, HALLWAY, OUT_OF_BOUNDS}
 
+	/**
+	 * Constructor takes letterValue and uses it to determine details about room
+	 * @param letterValue
+	 */
 	public Cell(String letterValue) {
 		this.letterValue = letterValue;
 		
@@ -50,6 +46,17 @@ public class Cell {
 			
 			if (Character.isUpperCase(letterValue.charAt(0))) isDoorway = true;
 		}
+	}
+	
+	
+	// ---- Getters and Setters ---- //
+	
+	public boolean isOccupied() {
+		return isOccupied;
+	}
+
+	public void setOccupied(boolean isOccupied) {
+		this.isOccupied = isOccupied;
 	}
 	
 	public boolean isDoorway() {

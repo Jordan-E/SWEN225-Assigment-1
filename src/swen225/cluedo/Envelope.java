@@ -29,13 +29,13 @@ public class Envelope {
 			else if (c instanceof RoomCard) room = (RoomCard) c;
 		}
 	}
-
-	public CharacterCard getCharacter() {return character;}
-
-	public WeaponCard getWeapon() {return weapon;}
-
-	public RoomCard getRoom() {return room;}
-
+	
+	/**
+	 * Checks if the given EnvelopeMove (guess) is correct
+	 * 
+	 * @param move
+	 * @return whether guessed contents of envelope correctly
+	 */
 	public boolean processGuess(EnvelopeMove move) {		
 		if (!character.represents(move.getCharacter())) return false;
 		if (!weapon.represents(move.getWeapon())) return false;
@@ -43,4 +43,12 @@ public class Envelope {
 		
 		return false;
 	}
+	
+	// --- Getters and setters --- //
+
+	public CharacterCard getCharacter() {return character;}
+
+	public WeaponCard getWeapon() {return weapon;}
+
+	public RoomCard getRoom() {return room;}
 }

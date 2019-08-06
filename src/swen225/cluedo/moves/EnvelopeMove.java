@@ -21,12 +21,6 @@ public class EnvelopeMove extends Move {
 	}
 
 	@Override
-	public String invalidMessage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean isValid(Board board) {
 		return true;
 	}

@@ -1,7 +1,7 @@
 package swen225.cluedo.cards;
 
 /**
- * Card for each weapon in Cluedo
+ * class for weapon card
  * 
  * @author elmes
  *
