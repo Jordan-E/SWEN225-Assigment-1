@@ -23,44 +23,32 @@ public class Cluedo {
 	private TurnOrder turnOrder = new TurnOrder();
 	private Envelope envelope;
 	private Board board;
-	private List<CharacterPiece> characterPieces = new ArrayList<>();
-	private List<WeaponPiece> weaponPieces = new ArrayList<>();
 	
 	// default values
 	private static final String[] names = {"Miss Scarlett", "Colonel Mustard", "Mrs White", "Mr Green", "Mrs Peacock", "Professor Plum"};
 	private static final String[] weapons = {"Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"};
-	
+	private static final String[] rooms = {"Kitchen", "Ball Room", "Conservatory", "Billiard Room", "Library", "Study", "Hall", "Lounge", "Dining Room"};
 	
 	/**
 	 * Constructor
-	 * Initializes board, character pieces, weapon pieces, users and turn order
+	 * Initializes board, users and turn order
 	 * @param playerCount
 	 */
 	public Cluedo() {
 		Scanner inputScanner = new Scanner(System.in);
 		Integer playerCount = getPlayerCount(inputScanner);
-		
-		
-		// initialize character pieces
-		for (int i = 0; i < names.length; i++) {
-			characterPieces.add(new swen225.cluedo.pieces.CharacterPiece(names[i]));
-		}
-		
-		// initialize weapon pieces
-		for (int i = 0; i < weapons.length; i++) {
-			weaponPieces.add(new WeaponPiece(weapons[i]));
-		}
-		
-		board = new Board(25,24, characterPieces, weaponPieces);
+				
+		board = new Board(25,24, names, weapons, rooms);
 		
 		// initialize users and their position in queue
+		List<CharacterPiece> characterPieces = board.getCharacterPieces();
 		for (int i = 0; i < playerCount; i++) {
 			User user = new User(characterPieces.get(i));
 			turnOrder.addUser(user);
 		}
 		
 		// distribute cards
-		Deck deck = new Deck(names, weapons);
+		Deck deck = new Deck(names, weapons, rooms);
 		envelope = new Envelope(deck.getEnvelopeContents());
 		dealHands(deck);
 		
@@ -93,7 +81,7 @@ public class Cluedo {
 			
 			// if still users turn (didn't guess envelope) check to see if they can guess
 			if (user.equals(turnOrder.currentUser())) {
-				Board.Room room = board.inRoom(user);
+				Room room = board.inRoom(user);
 				GuessMove guess = null;
 				if (room != null && yesNoQuestion(inputScanner, "Would you like to make guess?")) {
 					guess = guessSelection(inputScanner, user);
@@ -109,7 +97,7 @@ public class Cluedo {
 			System.out.println("--------------- End of turn ---------------");
 		}
 		
-		System.out.println("/n==================== END OF GAME ====================");
+		System.out.println("\n==================== END OF GAME ====================");
 	}
 
 	/**
@@ -194,15 +182,16 @@ public class Cluedo {
 		turnOrder.resetOrder();
 	}
 	
+	
 	/**
-	 * Asks the user if they would like to see their cards
+	 * Asks the user if they would like to see the cards they have seen
 	 * If they do displays them
 	 * 
 	 * @param inputScanner
 	 * @param user
 	 */
 	private void viewCardsDialogue(Scanner inputScanner, User user) {
-		if (yesNoQuestion(inputScanner, "Would you like to see the cards in your hand?")) {
+		if (yesNoQuestion(inputScanner, "Would you like to see the list of cards you have seen?")) {
 			System.out.println(user.getSeen());
 		}
 	}	
@@ -218,12 +207,12 @@ public class Cluedo {
 	 */
 	private void processEnvelopeGuess(User user, EnvelopeMove eMove) {
 		System.out.println(user.getName() + " guessed that " + eMove.getCharacter() + " is the murderer, " + 
-				eMove.getWeapon() + " is the murder weapon, and " + eMove.getRoom() + " is the location.");
+				eMove.getWeapon() + " is the murder weapon, and " + eMove.getRoom().getName() + " is the location.");
 		
 		if (envelope.processGuess(eMove)) {
 			// end game. They guessed correctly
 			System.out.println(eMove.getUser().getName() + " guessed the contents of the envelope correctly.");
-			System.out.println("The murderer was " + eMove.getCharacter() + " with a " + eMove.getWeapon() + " in the " + eMove.getRoom() + ".");
+			System.out.println("The murderer was " + eMove.getCharacter() + " with a " + eMove.getWeapon() + " in the " + eMove.getRoom().getName() + ".");
 			turnOrder.removeAll();
 		} else {
 			// Incorrect guess. Remove this player from the game (can still be called on for disproving guesses)
@@ -246,7 +235,7 @@ public class Cluedo {
 		System.out.println(user.getName() + " has an opportunity to guess in " + board.inRoom(user));
 		CharacterPiece character = chooseCharacter(inputScanner);
 		WeaponPiece weapon = chooseWeapon(inputScanner);
-		Board.Room room = board.inRoom(user);
+		Room room = board.inRoom(user);
 		
 		return new GuessMove(user, character, weapon, room);
 	}
@@ -264,14 +253,14 @@ public class Cluedo {
 	 */
 	private void processGuess(Scanner inputScanner, GuessMove guess) {
 		System.out.println("Murderer - " + guess.getCharacter().toString() + "\tWeapon - " 
-				+ guess.getWeapon().toString() + "\tRoom - " + guess.getRoom());
+				+ guess.getWeapon().toString() + "\tRoom - " + guess.getRoom().getName());
 		
 		List<User> responseOrder = turnOrder.responseOrder(guess.getUser());
 		boolean disputed = false;
 		for (User user : responseOrder) {
 			if (disputed) continue;
 			
-			List<Card> cards = user.hasCards(guess.getCharacter().getName(), guess.getWeapon().getName(), guess.getRoom());
+			List<Card> cards = user.hasCards(guess.getCharacter().getName(), guess.getWeapon().getName(), guess.getRoom().getName());
 			if (cards.size() > 0) {
 				disputed = true;
 				
@@ -348,7 +337,7 @@ public class Cluedo {
 		System.out.println(user.getName() + " is guessing the contents of the envelope.");
 		String character = chooseCharacter(inputScanner).getName();
 		String weapon = chooseWeapon(inputScanner).getName();
-		Board.Room room = chooseRoom(inputScanner);
+		Room room = chooseRoom(inputScanner);
 		
 		return new EnvelopeMove(user, character, weapon, room);
 	}
@@ -385,7 +374,7 @@ public class Cluedo {
 	 * @return selected CharacterPiece
 	 */
 	private CharacterPiece chooseCharacter(Scanner inputScanner) {
-		return (CharacterPiece) choosePiece(inputScanner, "Who do you think the murderer was?", characterPieces);
+		return (CharacterPiece) choosePiece(inputScanner, "Who do you think the murderer was?", board.getCharacterPieces());
 	}
 	
 	
@@ -396,7 +385,7 @@ public class Cluedo {
 	 * @return selected WeaponPiece
 	 */
 	private WeaponPiece chooseWeapon(Scanner inputScanner) {
-		return (WeaponPiece) choosePiece(inputScanner, "What do you think the murder weapon was?", weaponPieces);
+		return (WeaponPiece) choosePiece(inputScanner, "What do you think the murder weapon was?", board.getWeaponPieces());
 	}
 	
 	
@@ -406,22 +395,22 @@ public class Cluedo {
 	 * @param inputScanner
 	 * @return selected room
 	 */
-	private Board.Room chooseRoom(Scanner inputScanner) {
+	private Room chooseRoom(Scanner inputScanner) {
 		System.out.println("Which room do you think the murder took place in?");
 		
-		Board.Room[] rooms = Board.Room.values();
+		List<Room> rooms = board.getRooms();
 		int count = 1;
-		for (Board.Room room : rooms) {
-			System.out.println("\t(" + count++ + ") " + room);
+		for (Room room : rooms) {
+			System.out.println("\t(" + count++ + ") " + room.getName());
 		}
 		
 		List<String> validInput = new ArrayList<>();
-		for (Integer i = 1; i <= rooms.length; i++) {
+		for (Integer i = 1; i <= rooms.size(); i++) {
 			validInput.add(i.toString());
 		}
 		
 		String input = getInput(inputScanner, validInput);
-		return rooms[Integer.parseInt(input)-1];
+		return rooms.get(Integer.parseInt(input)-1);
 	}
 	
 	/**

@@ -8,5 +8,5 @@ package swen225.cluedo.cards;
  *
  */
 public interface Card {
-	public boolean represents(Object o);
+	public boolean represents(String s);
 }

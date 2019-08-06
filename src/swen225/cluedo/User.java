@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import swen225.cluedo.Board.Room;
 import swen225.cluedo.cards.Card;
 import swen225.cluedo.pieces.CharacterPiece;
 
@@ -38,7 +37,7 @@ public class User {
 	 * @param room
 	 * @return List of cards that the user has out of inputs
 	 */
-	public List<Card> hasCards(String character, String weapon, Room room) {
+	public List<Card> hasCards(String character, String weapon, String room) {
 		List<Card> cards = new ArrayList<>();
 		
 		for (Card c : hand) {

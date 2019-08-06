@@ -1,6 +1,6 @@
 package swen225.cluedo.cards;
 
-import swen225.cluedo.Board.Room;
+import swen225.cluedo.Room;
 
 /**
  * Class for Room card
@@ -10,9 +10,9 @@ import swen225.cluedo.Board.Room;
  */
 public class RoomCard implements Card{
 	
-	Room room;
+	String room;
 	
-	public RoomCard(Room room) {
+	public RoomCard(String room) {
 		this.room = room;
 	}
 
@@ -26,8 +26,7 @@ public class RoomCard implements Card{
 	 * @param room
 	 * @return
 	 */
-	public boolean represents(Object room) {
-		if (room instanceof Room) return this.room.equals((Room) room);
-		return false;
+	public boolean represents(String room) {
+		return this.room.equals(room);
 	}
 }

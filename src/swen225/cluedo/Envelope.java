@@ -39,7 +39,7 @@ public class Envelope {
 	public boolean processGuess(EnvelopeMove move) {		
 		if (!character.represents(move.getCharacter())) return false;
 		if (!weapon.represents(move.getWeapon())) return false;
-		if (!room.represents(move.getRoom())) return false;
+		if (!room.represents(move.getRoom().getName())) return false;
 		
 		return false;
 	}

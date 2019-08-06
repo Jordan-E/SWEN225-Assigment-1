@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import swen225.cluedo.Board;
 import swen225.cluedo.Cell;
+import swen225.cluedo.Room;
 import swen225.cluedo.pieces.CharacterPiece;
 import swen225.cluedo.pieces.WeaponPiece;
 
@@ -16,15 +17,14 @@ public class BoardTests {
 
 	private static final String[] names = {"Miss Scarlett", "Colonel Mustard", "Mrs White", "Mr Green", "Mrs Peacock", "Professor Plum"};
 	private static final String[] weapons = {"Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"};
+	private static final String[] rooms = {"Kitchen", "Ball Room", "Conservatory", "Billiard Room", "Library", "Study", "Hall", "Lounge", "Dining Room"};
 	
-	private List<CharacterPiece> characterPieces = populateCharacterPieces();
-	private List<WeaponPiece> weaponPieces = populateWeaponPieces();
 	
 	/**
 	 * Ensure the board layout is correct
 	 */
 	@Test public void checkBoardLayout() {
-		Board b = new Board(25, 24, characterPieces, weaponPieces);
+		Board b = new Board(25, 24, names, weapons, rooms);
 		
 		String[][] expected = {
 			{"-","-","-","-","-","-","-","-","-"," ","-","-","-","-"," ","-","-","-","-","-","-","-","-","-"},//0
@@ -67,7 +67,9 @@ public class BoardTests {
 	 */
 	@Test 
 	public void checkInitialPlayerLocation() {
-		for (CharacterPiece p : characterPieces) {
+		Board b = new Board(25, 24, names, weapons, rooms);
+		
+		for (CharacterPiece p : b.getCharacterPieces()) {
 			int id = p.getIdentifyingNum();
 			if(id == 1) {
 				assertEquals(7, p.getX());
@@ -95,23 +97,4 @@ public class BoardTests {
 	// ------ Test Moves ----- //
 	
 	
-	
-	// ------ Populate ------//
-	private List<CharacterPiece> populateCharacterPieces() {
-		List<CharacterPiece> list = new ArrayList<>();
-		for (int i = 0; i < names.length; i++) {
-			list.add(new swen225.cluedo.pieces.CharacterPiece(names[i]));
-		}
-		
-		return list;
-	}
-	
-	private List<WeaponPiece> populateWeaponPieces() {
-		List<WeaponPiece> list = new ArrayList<>();
-		for (int i = 0; i < weapons.length; i++) {
-			list.add(new WeaponPiece(weapons[i]));
-		}
-		
-		return list;
-	}
 }
