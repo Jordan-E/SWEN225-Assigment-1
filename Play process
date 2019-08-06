@@ -1,3 +1,26 @@
+What the code should do:
+
+Create: Players, weapons, deck. Y
+load cells in board. Y
+pick 3 cards for envelpoe. Y
+distrobute cards to users. Y
+roll dice. Y
+move characters: not diagonal, not resusing the same spaces. N
+suggestion for murder: move player and weapon into the room. 
+everyone refutes this susjection by showing one of their cards
+if no player can refute this the suggestion is a potential solution candidate
+make an accusation to try and guess the envelope: this player only then can see the envelope 
+if the accusation is correct this player is the winner
+if the accusation is wrong this player keeps playing but cant win the game
+
+TODO:
+can resue cells.
+must use up all the moves unless in room.
+Enter the door in the right direction.
+
+
+
+PLay:
 Make the board
 Select one of each type of card and put them into the envelope
 Distribute the remaining cards between all users
@@ -10,3 +33,8 @@ Play
   Check if in room. Offer them a chance to make a suggestion
   Go around players in order of queue. If they have a card that disproves the suggestion then show them said card.
     Update relevant map
+    
+    
+    
+    
+ 
