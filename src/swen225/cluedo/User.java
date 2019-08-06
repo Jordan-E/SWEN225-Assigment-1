@@ -18,13 +18,15 @@ import swen225.cluedo.pieces.CharacterPiece;
 public class User {
 	 
 	private Set<Card> hand;
+	private Set<Card> seen;
 	private String name;
 	private CharacterPiece character;
 	
 	public User(CharacterPiece character) {
 		this.character = character;
 		name = character.getName();
-		hand = new HashSet<Card>();
+		hand = new HashSet<>();
+		seen = new HashSet<>();
 	}
 	
 	/**
@@ -49,8 +51,15 @@ public class User {
 	
 	/**
 	 * adds card to user's hand
+	 * @param card
 	 */
-	public void addCard(Card card) {hand.add(card);}
+	public void addCardToHand(Card card) {hand.add(card); seen.add(card);}
+	
+	/**
+	 * Adds card to user's seen cards
+	 * @param card
+	 */
+	public void addCardToSeen(Card card) {seen.add(card);}
 	
 	
 	// --- Getters --- //
@@ -65,6 +74,18 @@ public class User {
 		StringBuffer sb = new StringBuffer();
 		boolean first = true;
 		for (Card c : hand) {
+			if (!first) sb.append(", ");
+			else first = false;
+			sb.append(c.toString());
+		}
+		
+		return sb.toString();
+	}
+	
+	public String getSeen() {
+		StringBuffer sb = new StringBuffer();
+		boolean first = true;
+		for (Card c : seen) {
 			if (!first) sb.append(", ");
 			else first = false;
 			sb.append(c.toString());

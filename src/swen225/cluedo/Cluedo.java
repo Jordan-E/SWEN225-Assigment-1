@@ -186,7 +186,7 @@ public class Cluedo {
 	 */
 	private void dealHands(Deck deck) {
 		while (!deck.isEmpty()) {
-			turnOrder.currentUser().addCard(deck.randomCard());
+			turnOrder.currentUser().addCardToHand(deck.randomCard());
 			turnOrder.endTurn();
 		}
 		
@@ -203,7 +203,7 @@ public class Cluedo {
 	 */
 	private void viewCardsDialogue(Scanner inputScanner, User user) {
 		if (yesNoQuestion(inputScanner, "Would you like to see the cards in your hand?")) {
-			System.out.println(user.getHand());
+			System.out.println(user.getSeen());
 		}
 	}	
 	
@@ -281,6 +281,7 @@ public class Cluedo {
 				} else show = cards.get(0);
 				
 				System.out.println(user.getName() + " has the " + show.toString() + " card.");
+				guess.getUser().addCardToSeen(show);
 			}
 		}
 		if (!disputed) System.out.println("No one else has any of the cards you guessed.");
@@ -297,7 +298,7 @@ public class Cluedo {
 	 */
 	private Card cardChoiceDialogue(Scanner inputScanner, User user, List<Card> cards) {
 		int count = 1;
-		System.out.println("Which card would you like to show " + user.getName() + ".");
+		System.out.println(user.getName() + ", which card would you like to show?");
 		for (Card card : cards) {
 			System.out.println("\t(" + count++ + ") " + card);
 		}
