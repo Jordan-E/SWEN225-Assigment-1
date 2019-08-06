@@ -6,12 +6,12 @@ pick 3 cards for envelpoe. Y
 distrobute cards to users. Y
 roll dice. Y
 move characters: not diagonal, not resusing the same spaces. N
-suggestion for murder: move player and weapon into the room. 
-everyone refutes this susjection by showing one of their cards
-if no player can refute this the suggestion is a potential solution candidate
-make an accusation to try and guess the envelope: this player only then can see the envelope 
-if the accusation is correct this player is the winner
-if the accusation is wrong this player keeps playing but cant win the game
+suggestion for murder: move player and weapon into the room. Y
+everyone refutes this susjection by showing one of their cards Y
+if no player can refute this the suggestion is a potential solution candidate Y
+make an accusation to try and guess the envelope: this player only then can see the envelope Y
+if the accusation is correct this player is the winner Y
+if the accusation is wrong this player keeps playing but cant win the game Y
 
 TODO:
 can resue cells.
