@@ -11,6 +11,7 @@ class Cluedo{
   private void viewCards(Scanner input, User user) {}
   private Move moveSelection(Scanner input) {}
   private GuessMove guessSelection(Scanner input) {}
+  private void processGuess(Scanner input, GuessMove guess) {}
 }
 
 class WeaponCard {
@@ -195,10 +196,10 @@ class Cluedo {
   position 507 7 287 146;
   position.association Cluedo__User 140,146 262,0;
   position.association Board__Cluedo 287,31 0,2;
-  position.association Cluedo__Deck 0,48 208,0;
-  position.association Cluedo__TurnOrder 129,146 78,0;
+  position.association Cluedo__Deck 0,82 208,0;
+  position.association Cluedo__TurnOrder 45,163 78,0;
   position.association Cluedo__Envelope 0,13 302,24;
-  position.association Cluedo__Move 194,146 75,0;
+  position.association Cluedo__Move 252,163 75,0;
 }
 
 class Envelope {
@@ -232,15 +233,15 @@ class Piece {
 }
 
 class WeaponPiece {
-  position 1180 498 109 61;
+  position 1171 498 109 61;
 }
 
 class CharacterPiece {
-  position 1297 496 114 78;
+  position 1292 495 114 78;
 }
 
 class TurnOrder {
-  position 363 191 226 214;
+  position 366 199 226 146;
   position.association Cluedo__TurnOrder 109,10 0,39;
   position.association TurnOrder__User:order 139,146 146,0;
   position.association TurnOrder__User:guessing 9,146 14,0;
@@ -288,4 +289,5 @@ class BoardPosition {
 
 class Step {
   position 1039 716 153 95;
-}//$?[End_of_model]$?
+}
+//$?[End_of_model]$?
