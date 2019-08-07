@@ -13,28 +13,24 @@ class Cluedo{
   private GuessMove guessSelection(Scanner input) {}
 }
 
-//done
 class WeaponCard {
   isA Card;
 
   String name;
 }
 
-//done
 class RoomCard {
   isA Card;
 
   String room;
 }
 
-//done
 class CharacterCard {
   isA Card;
 
   String name;
 }
 
-//done
 class Card {
   public boolean represents(String s) {}
 }
@@ -53,7 +49,6 @@ class Deck {
   public Card getCardOfType(Class class) {}
 }
 
-// done
 class TurnOrder {
   0..1 -> 0..6 User guessing;
   0..1 -> 3..6 User order;
@@ -66,7 +61,6 @@ class TurnOrder {
   public boolean playersLeft() {}
 }
 
-//done
 class User {
   0..1 -> 3..6 Card hand;
   0..1 -> 3..18 Card seen;
@@ -81,7 +75,6 @@ class User {
 }
 
 
-// done
 class GuessMove {
   isA Move;
 
@@ -90,7 +83,7 @@ class GuessMove {
   Room room;
 }
 
-// done
+
 class EnvelopeMove {
   isA Move;
 
@@ -99,7 +92,7 @@ class EnvelopeMove {
   Room room;
 }
 
-// done
+
 class CustomMove {
   isA Move;
   1 -- * Step;
@@ -124,7 +117,7 @@ class CustomMove {
   }
 }
 
-// done
+
 class Move {
   User user;
   String invalidMessage;
@@ -133,7 +126,7 @@ class Move {
   public boolean apply(Board board){}
 }
 
-// done
+
 class Board {
   1 -- * Cell;
   1 -- 12 Piece;
@@ -152,7 +145,7 @@ class Board {
 }
 
 
-// done
+
 class Cell {
   * -> 0..1 Room;
   
@@ -169,7 +162,7 @@ class Room {
   String name;
 }
 
-// done
+
 class Piece {
   String name;
   int row;
@@ -178,12 +171,12 @@ class Piece {
   public void move(int x, int y) {}
 }
 
-// done
+
 class WeaponPiece {
   isA Piece;
 }
 
-// done
+
 class CharacterPiece {
   int id;
   isA Piece;
